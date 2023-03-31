@@ -1,52 +1,66 @@
 <!DOCTYPE html>
-<html lang=“en”>
-<head>
-  <title></title>
-  <meta charset=“UTF-8" />
-  <link rel=“stylesheet” type=“text/css” href=“./assets/css/style.css” />
-  <meta name=“viewport” content=“width=device-width, initial-scale=1”/>
-  <link rel=“stylesheet” href=“./assets/css/style.css” />
-  <link rel=“stylesheet” href=“https://unpkg.com/@picocss/pico@1.*/css/pico.min.css”>
-</head>
-<body>
-    <main class="container"></main>
-    <script src=“./assets/js/script.js”></script>
-    
-       <details role="list">
-        <summary aria-haspopup="listbox" role="button" class="secondary">
-          Tempature
-        </summary>
-        <ul role="listbox">
-          <li><a>Hot</a></li>
-          <li><a>Cold</a></li>
-          <li><a>Warm</a></li>
-        </ul>
-      </details>
-      
-      <!-- Contrast -->
-      <details role="list">
-        <summary aria-haspopup="listbox" role="button" class="contrast">
-          Feels like
-        </summary>
-        <ul role="listbox">
-          <li><a>Hotter than satan nude</a></li>
-          <li><a>Colder than my mother in law</a></li>
-          <li><a>As warm as a hug from mommy</a></li>
-        </ul>
-      </details>
-      <details role="list">
-        details role="list">
-        <summary aria-haspopup="listbox" role="button">
-          Hotel prices
-        </summary>
-        <ul role="listbox">
-          <li><a>Rich as fuck</a></li>
-          <li><a>Your on a budget</a></li>
-          <li><a>poor as fuck</a></li>
-        </ul>
-      </details>
+<html lang="en">
 
-        </ul>
-      </details>
+<head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+</head>
+
+<body>
+
+    <!-- Added container -->
+    <main class="container">
+        <h1>Weekend Get Away!</h1>
+        <p>Find the best hotel for your needs</p>
+        <p>For the price you want</p>
+        <div class="grid">
+            <div>
+                <details role="list">
+                    <summary aria-haspopup="listbox" role="button" class="secondary">
+                        Tempature
+                    </summary>
+                    <ul role="listbox">
+                        <button>Hot</button>
+                        <button>Cold</button>
+                        <button>Warm</button>
+                    </ul>
+                </details>
+            </div>
+            <!-- Contrast  -->
+            <!-- added buttons for dropdown boxes -->
+            <!-- new quotes -->
+            <details role="list">
+                <summary aria-haspopup="listbox" role="button" class="contrast">
+                    Feels like
+                </summary>
+                <ul role="listbox">
+                    <button>Hotter than satan</button>
+                    <button>Cold a hell</button>
+                    <button>As warm as a hug</button>
+                </ul>
+            </details>
+            <details role="list">
+                <summary aria-haspopup="listbox" role="button">
+                    Hotel prices
+                </summary>
+                <ul role="listbox">
+                    <button>Rich as fuck</button>
+                    <button>Your on a budget</button>
+                    <button>poor as fuck</button>
+                </ul>
+            </details>
+            <main class="container"></main>
+        </div>
+        <script src="./assets/js/script.js"></script>
+    </main>
+
+    <main class="container"></main>
+    <script src= "assets/js/script.js"></script>
+
 </body>
+
 </html>
