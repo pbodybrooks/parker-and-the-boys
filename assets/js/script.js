@@ -6,11 +6,9 @@ let lat;
 let lon;
 let userLat;
 let userLon;
-let city = "tulsa";
+let city = toTitleCase("tulsa");
 
 const delayInMilliseconds = 1000; //1 second
-
-
 
 const simulateSubmitBtn = document.querySelector("#simulate-submit");
 
@@ -54,28 +52,45 @@ function getForecast(lat, lon, city){
         })
 }
 
+// function getLocation() {
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition(showPosition);
+//     } else { 
+//       alert("Geolocation may not be supported by this browser. Please ensure Location Access is Allowed")
+//     }
+// }
+
 function getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-      console.log("Geolocation is not supported by this browser.")
-    }
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+        } else {
+            reject(new Error("Geolocation is not supported by this browser."));
+        }
+    });
 }
 
-// parseInt
+// function showPosition(position, lat, lon) {
+//     userLat = parseInt(position.coords.latitude);
+//     userLon = parseInt(position.coords.longitude);
+//     // console.log("Type:")
+//     // console.log(typeof userLat);
+//     console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+//     // getDistance(userLat, userLon, lat, lon);
+//     return (userLat, userLon);
+// }
 
-function showPosition(position, lat, lon) {
-    userLat = parseInt(position.coords.latitude);
-    userLon = parseInt(position.coords.longitude);
-    // console.log("Type:")
-    // console.log(typeof userLat);
-    console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
-    // getDistance(userLat, userLon, lat, lon);
-    return (userLat, userLon);
+function showPosition(position) {
+    return new Promise((resolve) => {
+        userLat = parseInt(position.coords.latitude);
+        userLon = parseInt(position.coords.longitude);
+        console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+        resolve({ userLat, userLon });
+    });
 }
 
 
-function getDistance(userLat, userLon, lat, lon) {
+function getDistance(userLat, userLon, lat, lon, city) {
     const R = 3958.8; // Radius of the earth in miles
     console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
     // console.clear();
@@ -87,24 +102,38 @@ function getDistance(userLat, userLon, lat, lon) {
       Math.sin(dLon/2) * Math.sin(dLon/2)
       ; 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    const d = R * c; // Distance in km
-    console.log("Distance: " + d + "km");
-    return d;
+    const distance = Math.round(R * c); // Distance in km
+    console.log("Distance between your current location and " + city + " is approximately " + distance + " miles.");
+    return distance;
 }
 
 function deg2rad(deg) {
 return deg * (Math.PI/180)
 }
 
-function setTimeout(function() {
-    //your code to be executed after 1 second
-  }, delayInMilliseconds);
 
-function simulateSubmittedCritera() {
-    getCoords(city);
-    getLocation();
+// function simulateSubmittedCritera() {
+//     getCoords(city);
+//     getLocation();
     
-    getDistance(userLat, userLon, lat, lon);
+//     getDistance(userLat, userLon, lat, lon, city);
+// }
+
+async function simulateSubmittedCritera() {
+    getCoords(city);
+    try {
+        const position = await getLocation();
+        const { userLat, userLon } = await showPosition(position);
+        getDistance(userLat, userLon, lat, lon);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }
 
 simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
@@ -142,13 +171,6 @@ simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
 //     console.log("Global Scope\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
 // }
 
-async function myDisplay() {
-    let myPromise = new Promise(function(resolve) {
-      setTimeout(function() {
-        resolve("I love You !!");}, 3000);
-    });
-    document.getElementById("demo").innerHTML = await myPromise;
-  }
 
 
 
