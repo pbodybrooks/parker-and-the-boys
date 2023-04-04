@@ -1,15 +1,16 @@
-// 30-day Forecast URL: https://pro.openweathermap.org/data/2.5/forecast/climate?lat={lat}&lon={lon}&appid={API key}
-// GEO URL http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
-
-// "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
-
 // API Keys:
-const OpenWeatherAPIKey = "fe8c1985df685a70d00e6d5098ec6a2d";
+let OpenWeatherAPIKey = "fe8c1985df685a70d00e6d5098ec6a2d";
 
 // Global Vars
-// let lat;
-// let lon;
+let lat;
+let lon;
+let userLat;
+let userLon;
 let city = "tulsa";
+
+const testBtnEl1 = document.querySelector("#test-btn1");
+const testBtnEl2 = document.querySelector("#test-btn2");
+const testBtnEl3 = document.querySelector("#test-btn3");
 
 function getCoords(city){
     const geoURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
@@ -22,12 +23,14 @@ function getCoords(city){
             // get latitude and longitude
             .then(function (geoData) {
             // store latitude and longitude values
-            let lat = geoData.coord.lat;
-            let lon = geoData.coord.lon;
-            console.log(geoData);
+            lat = parseInt(geoData.coord.lat);
+            lon = parseInt(geoData.coord.lon);
+            console.log("Function: getCoords \nLat: " + lat + "\nLon: " + lon);
             
 
-            getForecast(lat, lon, city);
+            // getForecast(lat, lon, city);
+            // getLocation(lat, lon);
+            // return(lat, lon);
             })    
 }
 
@@ -56,23 +59,20 @@ function getLocation() {
 // parseInt
 
 function showPosition(position, lat, lon) {
-    userLat = position.coords.latitude;
-    userLon = position.coords.longitude;
-    console.log ("User lat & lon: " + userLat + userLon)
-
-    getDistanceFromLatLonInKm(userLat, userLon, lat, lon);
+    userLat = parseInt(position.coords.latitude);
+    userLon = parseInt(position.coords.longitude);
+    // console.log("Type:")
+    // console.log(typeof userLat);
+    console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+    // getDistance(userLat, userLon, lat, lon);
+    return (userLat, userLon);
 }
-  
-
-window.addEventListener('load', getCoords(city));
-window.addEventListener('load', getLocation);
 
 
-function getDistanceFromLatLonInKm(userLat, userLon, lat, lon) {
+function getDistance(userLat, userLon, lat, lon) {
     const R = 6371; // Radius of the earth in km
-    console.clear();
-    console.log("\n");
-    console.log("\n");
+    console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+    // console.clear();
     const dLat = deg2rad(userLat-lat);  // deg2rad below
     const dLon = deg2rad(userLon-lon); 
     const a = 
@@ -89,9 +89,26 @@ function getDistanceFromLatLonInKm(userLat, userLon, lat, lon) {
 function deg2rad(deg) {
 return deg * (Math.PI/180)
 }
-  
+
 
   
+// window.addEventListener('load', getCoords(city));
+// window.addEventListener('load', getLocation);
+// window.addEventListener('load', getDistance);
+
+testBtnEl1.addEventListener("click", getCoords(city));
+testBtnEl2.addEventListener("click", getLocation);
+testBtnEl3.addEventListener("click", getDistance(userLat, userLon, lat, lon));
+
+
+
+// window.addEventListener('load', logCoords(lat, lon, userLat, userLon))
+// function logCoords(lat, lon, userLat, userLon){
+//     console.log("Global Scope\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+// }
+
+
+
 
 
 
