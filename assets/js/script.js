@@ -52,43 +52,42 @@ function getForecast(lat, lon, city){
         })
 }
 
-// function getLocation() {
-//     if (navigator.geolocation) {
-//       navigator.geolocation.getCurrentPosition(showPosition);
-//     } else { 
-//       alert("Geolocation may not be supported by this browser. Please ensure Location Access is Allowed")
-//     }
-// }
-
 function getLocation() {
-    return new Promise((resolve, reject) => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-        } else {
-            reject(new Error("Geolocation is not supported by this browser."));
-        }
-    });
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+      alert("Geolocation may not be supported by this browser. Please ensure Location Access is Allowed")
+    }
 }
 
-// function showPosition(position, lat, lon) {
-//     userLat = parseInt(position.coords.latitude);
-//     userLon = parseInt(position.coords.longitude);
-//     // console.log("Type:")
-//     // console.log(typeof userLat);
-//     console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
-//     // getDistance(userLat, userLon, lat, lon);
-//     return (userLat, userLon);
+// function getLocation() {
+//     return new Promise((resolve, reject) => {
+//         if (navigator.geolocation) {
+//             navigator.geolocation.getCurrentPosition(resolve, reject);
+//         } else {
+//             reject(new Error("Geolocation is not supported by this browser."));
+//         }
+//     });
 // }
 
-function showPosition(position) {
-    return new Promise((resolve) => {
-        userLat = parseInt(position.coords.latitude);
-        userLon = parseInt(position.coords.longitude);
-        console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
-        resolve({ userLat, userLon });
-    });
+function showPosition(position, lat, lon) {
+    userLat = parseInt(position.coords.latitude);
+    userLon = parseInt(position.coords.longitude);
+    // console.log("Type:")
+    // console.log(typeof userLat);
+    console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+    // getDistance(userLat, userLon, lat, lon);
+    return (userLat, userLon);
 }
 
+// function showPosition(position) {
+//     return new Promise((resolve) => {
+//         userLat = parseInt(position.coords.latitude);
+//         userLon = parseInt(position.coords.longitude);
+//         console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+//         resolve({ userLat, userLon });
+//     });
+// }
 
 function getDistance(userLat, userLon, lat, lon, city) {
     const R = 3958.8; // Radius of the earth in miles
@@ -112,23 +111,25 @@ return deg * (Math.PI/180)
 }
 
 
-// function simulateSubmittedCritera() {
-//     getCoords(city);
-//     getLocation();
-    
-//     getDistance(userLat, userLon, lat, lon, city);
-// }
-
-async function simulateSubmittedCritera() {
+function simulateSubmittedCritera() {
     getCoords(city);
-    try {
-        const position = await getLocation();
-        const { userLat, userLon } = await showPosition(position);
-        getDistance(userLat, userLon, lat, lon);
-    } catch (error) {
-        console.error("Error:", error);
-    }
+    getLocation();
+    setTimeout(function () {
+        getDistance(userLat, userLon, lat, lon, city);
+    }, 5000);
+        
 }
+
+// async function simulateSubmittedCritera() {
+//     getCoords(city);
+//     try {
+//         const position = await getLocation();
+//         const { userLat, userLon } = await showPosition(position);
+//         getDistance(userLat, userLon, lat, lon, city);
+//     } catch (error) {
+//         console.error("Error:", error);
+//     }
+// }
 
 function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt){
