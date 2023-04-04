@@ -1,15 +1,20 @@
-// 30-day Forecast URL: https://pro.openweathermap.org/data/2.5/forecast/climate?lat={lat}&lon={lon}&appid={API key}
-// GEO URL http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid={API key}
-
-// "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
-
 // API Keys:
-const OpenWeatherAPIKey = "fe8c1985df685a70d00e6d5098ec6a2d";
+let OpenWeatherAPIKey = "fe8c1985df685a70d00e6d5098ec6a2d";
 
 // Global Vars
-// let lat;
-// let lon;
-let city = "tulsa";
+let lat;
+let lon;
+let userLat;
+let userLon;
+let city = toTitleCase("tulsa");
+
+const delayInMilliseconds = 1000; //1 second
+
+const simulateSubmitBtn = document.querySelector("#simulate-submit");
+
+// const testBtnEl = document.querySelector("#test-btn");
+// const testBtnEl2 = document.querySelector("#test-btn2");
+// const testBtnEl3 = document.querySelector("#test-btn3");
 
 function getCoords(city){
     const geoURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
@@ -22,12 +27,14 @@ function getCoords(city){
             // get latitude and longitude
             .then(function (geoData) {
             // store latitude and longitude values
-            let lat = geoData.coord.lat;
-            let lon = geoData.coord.lon;
-            console.log(geoData);
+            lat = parseInt(geoData.coord.lat);
+            lon = parseInt(geoData.coord.lon);
+            console.log("Function: getCoords \nLat: " + lat + "\nLon: " + lon);
             
 
-            getForecast(lat, lon, city);
+            // getForecast(lat, lon, city);
+            // getLocation(lat, lon);
+            // return(lat, lon);
             })    
 }
 
@@ -49,30 +56,43 @@ function getLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
     } else { 
-      console.log("Geolocation is not supported by this browser.")
+      alert("Geolocation may not be supported by this browser. Please ensure Location Access is Allowed")
     }
 }
 
-// parseInt
+// function getLocation() {
+//     return new Promise((resolve, reject) => {
+//         if (navigator.geolocation) {
+//             navigator.geolocation.getCurrentPosition(resolve, reject);
+//         } else {
+//             reject(new Error("Geolocation is not supported by this browser."));
+//         }
+//     });
+// }
 
 function showPosition(position, lat, lon) {
-    userLat = position.coords.latitude;
-    userLon = position.coords.longitude;
-    console.log ("User lat & lon: " + userLat + userLon)
-
-    getDistanceFromLatLonInKm(userLat, userLon, lat, lon);
+    userLat = parseInt(position.coords.latitude);
+    userLon = parseInt(position.coords.longitude);
+    // console.log("Type:")
+    // console.log(typeof userLat);
+    console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+    // getDistance(userLat, userLon, lat, lon);
+    return (userLat, userLon);
 }
-  
 
-window.addEventListener('load', getCoords(city));
-window.addEventListener('load', getLocation);
+// function showPosition(position) {
+//     return new Promise((resolve) => {
+//         userLat = parseInt(position.coords.latitude);
+//         userLon = parseInt(position.coords.longitude);
+//         console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+//         resolve({ userLat, userLon });
+//     });
+// }
 
-
-function getDistanceFromLatLonInKm(userLat, userLon, lat, lon) {
-    const R = 6371; // Radius of the earth in km
-    console.clear();
-    console.log("\n");
-    console.log("\n");
+function getDistance(userLat, userLon, lat, lon, city) {
+    const R = 3958.8; // Radius of the earth in miles
+    console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+    // console.clear();
     const dLat = deg2rad(userLat-lat);  // deg2rad below
     const dLon = deg2rad(userLon-lon); 
     const a = 
@@ -81,17 +101,78 @@ function getDistanceFromLatLonInKm(userLat, userLon, lat, lon) {
       Math.sin(dLon/2) * Math.sin(dLon/2)
       ; 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    const d = R * c; // Distance in km
-    console.log("Distance: " + d);
-    return d;
+    const distance = Math.round(R * c); // Distance in km
+    console.log("Distance between your current location and " + city + " is approximately " + distance + " miles.");
+    return distance;
 }
 
 function deg2rad(deg) {
 return deg * (Math.PI/180)
 }
-  
 
-  
+
+function simulateSubmittedCritera() {
+    getCoords(city);
+    getLocation();
+    setTimeout(function () {
+        getDistance(userLat, userLon, lat, lon, city);
+    }, 5000);
+        
+}
+
+// async function simulateSubmittedCritera() {
+//     getCoords(city);
+//     try {
+//         const position = await getLocation();
+//         const { userLat, userLon } = await showPosition(position);
+//         getDistance(userLat, userLon, lat, lon, city);
+//     } catch (error) {
+//         console.error("Error:", error);
+//     }
+// }
+
+function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+}
+
+simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
+
+
+
+// const cities = [
+//     salt lake city = {
+//         temperature: 70
+//         humid
+//     }
+// ]
+
+// window.addEventListener('load', getCoords(city));
+// window.addEventListener('load', getLocation);
+// window.addEventListener('load', getDistance);
+
+// testBtnEl1.addEventListener("click", function() {
+//     getCoords(city);
+//   });
+// testBtnEl2.addEventListener("click", getLocation);
+// testBtnEl3.addEventListener("click", function() {
+//     getDistance(userLat, userLon, lat, lon);
+// });
+
+
+// testBtnEl1.addEventListener("click", getCoords(city));
+// testBtnEl2.addEventListener("click", getLocation);
+// testBtnEl3.addEventListener("click", getDistance(userLat, userLon, lat, lon));
+
+
+
+// window.addEventListener('load', logCoords(lat, lon, userLat, userLon))
+// function logCoords(lat, lon, userLat, userLon){
+//     console.log("Global Scope\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+// }
+
+
 
 
 
