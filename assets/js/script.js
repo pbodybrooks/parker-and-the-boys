@@ -8,9 +8,15 @@ let userLat;
 let userLon;
 let city = "tulsa";
 
-const testBtnEl1 = document.querySelector("#test-btn1");
-const testBtnEl2 = document.querySelector("#test-btn2");
-const testBtnEl3 = document.querySelector("#test-btn3");
+const delayInMilliseconds = 1000; //1 second
+
+
+
+const simulateSubmitBtn = document.querySelector("#simulate-submit");
+
+// const testBtnEl = document.querySelector("#test-btn");
+// const testBtnEl2 = document.querySelector("#test-btn2");
+// const testBtnEl3 = document.querySelector("#test-btn3");
 
 function getCoords(city){
     const geoURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
@@ -70,7 +76,7 @@ function showPosition(position, lat, lon) {
 
 
 function getDistance(userLat, userLon, lat, lon) {
-    const R = 6371; // Radius of the earth in km
+    const R = 3958.8; // Radius of the earth in miles
     console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
     // console.clear();
     const dLat = deg2rad(userLat-lat);  // deg2rad below
@@ -82,7 +88,7 @@ function getDistance(userLat, userLon, lat, lon) {
       ; 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
     const d = R * c; // Distance in km
-    console.log("Distance: " + d);
+    console.log("Distance: " + d + "km");
     return d;
 }
 
@@ -90,15 +96,44 @@ function deg2rad(deg) {
 return deg * (Math.PI/180)
 }
 
+function setTimeout(function() {
+    //your code to be executed after 1 second
+  }, delayInMilliseconds);
 
-  
+function simulateSubmittedCritera() {
+    getCoords(city);
+    getLocation();
+    
+    getDistance(userLat, userLon, lat, lon);
+}
+
+simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
+
+
+
+// const cities = [
+//     salt lake city = {
+//         temperature: 70
+//         humid
+//     }
+// ]
+
 // window.addEventListener('load', getCoords(city));
 // window.addEventListener('load', getLocation);
 // window.addEventListener('load', getDistance);
 
-testBtnEl1.addEventListener("click", getCoords(city));
-testBtnEl2.addEventListener("click", getLocation);
-testBtnEl3.addEventListener("click", getDistance(userLat, userLon, lat, lon));
+// testBtnEl1.addEventListener("click", function() {
+//     getCoords(city);
+//   });
+// testBtnEl2.addEventListener("click", getLocation);
+// testBtnEl3.addEventListener("click", function() {
+//     getDistance(userLat, userLon, lat, lon);
+// });
+
+
+// testBtnEl1.addEventListener("click", getCoords(city));
+// testBtnEl2.addEventListener("click", getLocation);
+// testBtnEl3.addEventListener("click", getDistance(userLat, userLon, lat, lon));
 
 
 
@@ -107,7 +142,13 @@ testBtnEl3.addEventListener("click", getDistance(userLat, userLon, lat, lon));
 //     console.log("Global Scope\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
 // }
 
-
+async function myDisplay() {
+    let myPromise = new Promise(function(resolve) {
+      setTimeout(function() {
+        resolve("I love You !!");}, 3000);
+    });
+    document.getElementById("demo").innerHTML = await myPromise;
+  }
 
 
 
