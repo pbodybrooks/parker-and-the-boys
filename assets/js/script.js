@@ -18,71 +18,66 @@ let weatherBank = [];
 
 function fillWeatherBank() {
     // First, get users location coordinates
-    getUserLocation();
+    getUserLocation().then(() => {
+        // Second, after a 5 second delay:
+        setTimeout(async function () {
+            // For each city in the cityBank
+            for (const city of MVPcityBank) {
+                // Get city coordinates
+                await getCoords(city);
+                // Calculate distance between user and each city
+                const distance = getDistance(userLat, userLon, lat, lon, city);
+                // Get weather for each city and fill the weatherBank
+                await getForecast(lat, lon, city, distance);
+            }
 
-    // Second, after a 5 second delay:
-    setTimeout(function () {
-        // For each city in the cityBank
-        MVPcityBank.forEach(city => {
-            // Get city coordinates
-            getCoords(city);
-            // Calculate distance between user and each city
-            getDistance(userLat, userLon, lat, lon, city);
-            // Get weather for each city and fill the weatherBank
-            getForecast(lat, lon, city, distance);
-        return weatherBank
-    }, 5000); 
-    })
-    console.log("Weather Bank: ");
-    console.log(weatherBank);
-    return weatherBank;
+            console.log("Weather Bank: ");
+            console.log(weatherBank);
+            return weatherBank;
+        }, 5000);
+    });
 }
 
-function getCoords(city){
+async function getCoords(city) {
     const geoURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
-        // fetch geo data
-        fetch(geoURL)
-            .then(function (response) {
-            // get JSON format response
-            return response.json();
-            })
-            // get latitude and longitude
-            .then(function (geoData) {
-            // store latitude and longitude values
-            lat = parseFloat(geoData.coord.lat);
-            lon = parseFloat(geoData.coord.lon);
+    // fetch geo data
+    const response = await fetch(geoURL);
+    const geoData = await response.json();
 
-            // console.log("Function: getCoords \nLat: " + lat + "\nLon: " + lon);
-            // getForecast(lat, lon, city);
-        })    
+    // store latitude and longitude values
+    lat = parseFloat(geoData.coord.lat);
+    lon = parseFloat(geoData.coord.lon);
 }
 
-function getForecast(lat, lon, city, distance){
+async function getForecast(lat, lon, city, distance) {
     let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + OpenWeatherAPIKey + "&units=imperial";
-    // console.log(city + " Lat: " + lat + "\nLon: " + lon);
     // fetch forecast data
-    fetch(forecastURL)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (forecastData) {        
-            let weather = {
-                city: forecastData.city.name,
-                temperature: forecastData.list[0].main.temp,
-                wind: forecastData.list[0].wind.speed < 10 ? "low" : "high",
-                weather: forecastData.list[0].weather[0].main,
-                distance: distance
-            };
-            weatherBank.push(weather);
-        })
+    const response = await fetch(forecastURL);
+    const forecastData = await response.json();
+
+    let weather = {
+        city: forecastData.city.name,
+        temperature: forecastData.list[0].main.temp,
+        wind: forecastData.list[0].wind.speed < 10 ? "low" : "high",
+        weather: forecastData.list[0].weather[0].main,
+        distance: distance
+    };
+    weatherBank.push(weather);
 }
 
 function getUserLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-      alert('Geolocation may not be supported by this browser. Please ensure Location Access is set to "Allowed"')
-    }
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                userLat = parseFloat(position.coords.latitude);
+                userLon = parseFloat(position.coords.longitude);
+                console.log("Function: showPosition\nuserLat: " + userLat + "\nuserLon: " + userLon);
+                resolve();
+            });
+        } else {
+            reject('Geolocation may not be supported by this browser. Please ensure Location Access is set to "Allowed"');
+        }
+    });
 }
 
 function showPosition(position) {
@@ -132,6 +127,144 @@ function toTitleCase(str) {
 // simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
 fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
 
+
+// // API Keys:
+// let OpenWeatherAPIKey = "fe8c1985df685a70d00e6d5098ec6a2d";
+
+// // Global Vars
+// let lat;
+// let lon;
+// let userLat;
+// let userLon;
+
+// const delay = 5000;
+
+// const simulateSubmitBtn = document.querySelector("#simulate-submit");
+// const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
+
+// let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "San Francisco",
+//  "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
+// let weatherBank = [];
+
+// function fillWeatherBank() {
+//     // First, get users location coordinates
+//     getUserLocation();
+
+//     // Second, after a 5 second delay:
+//     setTimeout(function () {
+//         // For each city in the cityBank
+//         MVPcityBank.forEach(city => {
+//             // Get city coordinates
+//             getCoords(city);
+//             return weatherBank
+//     }, 5000); 
+//     })
+//     console.log("Weather Bank: ");
+//     console.log(weatherBank);
+//     return weatherBank;
+// }
+
+// function getCoords(city){
+//     const geoURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
+//         // fetch geo data
+//         fetch(geoURL)
+//             .then(function (response) {
+//             // get JSON format response
+//             return response.json();
+//             })
+//             // get latitude and longitude
+//             .then(function (geoData) {
+//             // store latitude and longitude values
+//             lat = parseFloat(geoData.coord.lat);
+//             lon = parseFloat(geoData.coord.lon);
+
+//             // console.log("Function: getCoords \nLat: " + lat + "\nLon: " + lon);
+//             // getForecast(lat, lon, city);
+//             getDistance(lat, lon, userLat, userLon, city);
+//         })    
+// }
+
+// function getForecast(lat, lon, distance){
+//     let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + OpenWeatherAPIKey + "&units=imperial";
+//     // console.log(city + " Lat: " + lat + "\nLon: " + lon);
+//     // fetch forecast data
+//     fetch(forecastURL)
+//         .then(function (response) {
+//             return response.json();
+//         })
+//         .then(function (forecastData) {  
+//             console.log(forecastData);      
+//             let weather = {
+//                 city: forecastData.city.name,
+//                 temperature: forecastData.list[0].main.temp,
+//                 wind: forecastData.list[0].wind.speed < 10 ? "low" : "high",
+//                 weather: forecastData.list[0].weather[0].main,
+//                 distance: distance
+//             };
+//             weatherBank.push(weather);
+//         })
+// }
+
+// function getUserLocation() {
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition(showPosition);
+//     } else { 
+//       alert('Geolocation may not be supported by this browser. Please ensure Location Access is set to "Allowed"')
+//     }
+// }
+
+// function showPosition(position) {
+//     userLat = parseFloat(position.coords.latitude);
+//     userLon = parseFloat(position.coords.longitude);
+//     console.log("Function: showPosition\nuserLat: " + userLat + "\nuserLon: " + userLon);
+//     // getDistance(userLat, userLon, lat, lon);
+//     return (userLat, userLon);
+// }
+
+// function getDistance(lat, lon, userLat, userLon, city) {
+//     const R = 3958.8; // Radius of the earth in miles
+//     console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+
+//     const dLat = deg2rad(userLat-lat);
+//     const dLon = deg2rad(userLon-lon); 
+//     const a = 
+//       Math.sin(dLat/2) * Math.sin(dLat/2) +
+//       Math.cos(deg2rad(lat)) * Math.cos(deg2rad(userLat)) * 
+//       Math.sin(dLon/2) * Math.sin(dLon/2)
+//       ; 
+//     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+//     const distance = Math.round(R * c);
+//     console.log("Distance between your current location and " + city + " is approximately " + distance + " miles.");
+//     setTimeout(function () {
+//         getForecast(lat, lon, distance)
+//     }, 5000);
+//     return distance;
+// }
+
+// function deg2rad(deg) {
+// return deg * (Math.PI/180)
+// }
+
+// function simulateSubmittedCritera() {
+//     fillWeatherBank();
+//     getCoords(city);
+//     getUserLocation();
+//     setTimeout(function () {
+//         getDistance(userLat, userLon, lat, lon, city);
+//     }, delay); 
+// }
+
+// function toTitleCase(str) {
+//     return str.replace(/\w\S*/g, function(txt){
+//         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+//     });
+// }
+
+// // simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
+// fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
+
+
+///////////////////////////////
 
 // function fillWeatherBank (){
 //     MVPcityBank.forEach(city => {
