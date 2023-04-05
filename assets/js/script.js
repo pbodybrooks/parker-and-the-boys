@@ -7,14 +7,53 @@ let lon;
 let userLat;
 let userLon;
 
+
+
 const delay = 5000;
 
 const simulateSubmitBtn = document.querySelector("#simulate-submit");
 const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 
+// const hotBtn = document.querySelector("#hot");
+// const modBtn = document.querySelector("#mod");
+// const coldBtn = document.querySelector("#cold");
+const tempRangeEl = document.querySelector("#tempRange");
+const windRangeEl = document.querySelector("#windRange");
+const conditionsEl = document.querySelector("#conditions");
+const drivingRangeEl = document.querySelector("#drivingRange");
+const submitBtn = document.querySelector("#submitButton");
+
 let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "San Francisco",
  "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
 let weatherBank = [];
+
+
+
+
+function returnCities(weatherBank) {
+    let returnedCities = [];
+    let userTemperature = parseInt(tempRangeEl.value);
+    let userWind = windRangeEl.value;
+    let conditions = conditionsEl.value;
+    let range = drivingRangeEl.value;
+
+    console.log(userTemperature);
+
+    for (i=0; i < weatherBank.length; i++){
+        // if (userTemperature < weatherBank[i].temperature && userWind === weatherBank[i].wind && conditions === weatherBank[i].weather && weatherBank[i].distance <= range){
+        //     returnedCities.push(weatherBank[i]);
+        // }
+        console.log(typeof userTemperature);
+        console.log(typeof weatherBank[i].temperature);
+        if (weatherBank[i].temperature > userTemperature){
+            returnedCities.push(weatherBank[i]);
+        }
+        
+    }
+
+    console.log(returnedCities);
+}
+submitBtn.addEventListener("click",returnCities);
 
 function fillWeatherBank() {
     // First, get users location coordinates
@@ -36,6 +75,7 @@ function fillWeatherBank() {
             return weatherBank;
         }, 5000);
     });
+    
 }
 
 async function getCoords(city) {
