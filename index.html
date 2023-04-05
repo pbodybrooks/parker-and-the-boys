@@ -15,6 +15,7 @@
     <!-- Added container -->
     <main class="container">
       <button type="button" id="simulate-submit" class="btn btn-primary">Simulate User Criteria Submission</button>
+      <button type="button" id="fill-weatherBank" class="btn btn-primary">Fill the Weather Bank!</button>
       <!-- <button type="button" id="test-btn" class="btn btn-primary">getCoords</button> -->
       <!-- <button type="button" id="test-btn2" class="btn btn-primary">getLocation</button>
       <button type="button" id="test-btn3" class="btn btn-primary">getDistance</button> -->
@@ -22,30 +23,38 @@
         <p>Find the best hotel for your needs</p>
         <p>For the price you want</p>
         <div class="grid">
-            <div>
                 <details role="list">
                     <summary aria-haspopup="listbox" role="button" class="secondary">
-                        Tempature
+                        Mid-Day Temperature
                     </summary>
                     <ul role="listbox">
-                        <button>Hot</button>
-                        <button>Cold</button>
-                        <button>Warm</button>
+                        <button>Hot [Above 80&#8457]</button>
+                        <button>Moderate [50&#8457 - 80&#8457]</button>
+                        <button>Cold [Below 50&#8457]</button>
                     </ul>
                 </details>
-            </div>
+                <details role="list">
+                  <summary aria-haspopup="listbox" role="button">
+                      Wind
+                  </summary>
+                  <ul role="listbox">
+                      <button>Low [0 - 10 mph]</button>
+                      <button>High [Above 10 mph]</button>
+                  </ul>
+                </details>
             <!-- Contrast  -->
             <!-- added buttons for dropdown boxes -->
             <!-- new quotes -->
             <details role="list">
-                <summary aria-haspopup="listbox" role="button" class="contrast">
-                    Feels like
-                </summary>
-                <ul role="listbox">
-                    <button>Hotter than satan</button>
-                    <button>Cold a hell</button>
-                    <button>As warm as a hug</button>
-                </ul>
+              <summary aria-haspopup="listbox" role="button">
+                  Conditions
+              </summary>
+              <ul role="listbox">
+                  <button>Clear Skies</button>
+                  <button>Cloudy</button>
+                  <button>Rain</button>
+                  <button>Thunder</button>
+              </ul>
             </details>
             <details role="list">
                 <summary aria-haspopup="listbox" role="button">
@@ -57,6 +66,7 @@
                     <button>poor as fuck</button>
                 </ul>
             </details>
+            
             <main class="container"></main>
         </div>
         <script src="./assets/js/script.js"></script>
