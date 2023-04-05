@@ -11,10 +11,29 @@ let city = toTitleCase("tulsa");
 const delayInMilliseconds = 1000; //1 second
 
 const simulateSubmitBtn = document.querySelector("#simulate-submit");
+const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 
 // const testBtnEl = document.querySelector("#test-btn");
 // const testBtnEl2 = document.querySelector("#test-btn2");
 // const testBtnEl3 = document.querySelector("#test-btn3");
+
+//query user for:
+// temperature
+// humidity
+// wind (low - < 10mph or high > 10 mph)
+// weather (thunder/drizzle/rain/snow/clear/clouds)
+
+MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "San Francisco", "Miami"];
+let weatherBank = [];
+
+function fillWeatherBank (){
+    MVPcityBank.forEach(city => {
+        getCoords(city);
+        return weatherBank
+    })
+    console.log("Weather Bank: ");
+    console.log(weatherBank)
+}
 
 function getCoords(city){
     const geoURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
@@ -29,27 +48,36 @@ function getCoords(city){
             // store latitude and longitude values
             lat = parseInt(geoData.coord.lat);
             lon = parseInt(geoData.coord.lon);
-            console.log("Function: getCoords \nLat: " + lat + "\nLon: " + lon);
+            // console.log("Function: getCoords \nLat: " + lat + "\nLon: " + lon);
             
 
-            // getForecast(lat, lon, city);
-            // getLocation(lat, lon);
-            // return(lat, lon);
+            getForecast(lat, lon, city);
             })    
 }
 
 function getForecast(lat, lon, city){
     let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + OpenWeatherAPIKey + "&units=imperial";
-    console.log(city + " Lat: " + lat + "\nLon: " + lon);
+    // console.log(city + " Lat: " + lat + "\nLon: " + lon);
     // fetch forecast data
     fetch(forecastURL)
         .then(function (response) {
         return response.json();
         })
         .then(function (forecastData) {
-        console.log('Five Day Forecast in ' + city + " is:");
-        console.log(forecastData);
+        // console.log('Five Day Forecast in ' + city + " is:");
+        // console.log(forecastData);
+        
+        let weather = {
+            city: forecastData.city.name,
+            temperature: forecastData.list[0].main.temp,
+            // humidity: forecastData.list[0].main.humidity,
+            wind: forecastData.list[0].wind.speed < 10 ? "low" : "high",
+            weather: forecastData.list[0].weather[0].main
+        };
+        weatherBank.push(weather);
         })
+        // return weatherBank;
+    // console.log(weatherBank);
 }
 
 function getLocation() {
@@ -70,12 +98,12 @@ function getLocation() {
 //     });
 // }
 
-function showPosition(position, lat, lon) {
+function showPosition(position) {
     userLat = parseInt(position.coords.latitude);
     userLon = parseInt(position.coords.longitude);
     // console.log("Type:")
     // console.log(typeof userLat);
-    console.log("Function: showPosition\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+    console.log("Function: showPosition\nuserLat: " + userLat + "\nuserLon: " + userLon);
     // getDistance(userLat, userLon, lat, lon);
     return (userLat, userLon);
 }
@@ -138,6 +166,8 @@ function toTitleCase(str) {
 }
 
 simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
+
+fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
 
 
 
