@@ -7,8 +7,6 @@ let lon;
 let userLat;
 let userLon;
 
-
-
 const delay = 5000;
 
 const simulateSubmitBtn = document.querySelector("#simulate-submit");
@@ -27,14 +25,6 @@ let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denve
  "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
 let weatherBank = [];
 
-// for reference:
-// let weather = {
-//     city: forecastData.city.name,
-//     temperature: forecastData.list[0].main.temp,
-//     wind: forecastData.list[0].wind.speed < 10 ? "low" : "high",
-//     weather: forecastData.list[0].weather[0].main,
-//     distance: distance
-// };
 
 function returnCities(weatherBank) {
     weatherBank = JSON.parse(localStorage.getItem("weatherBank"));
@@ -44,13 +34,39 @@ function returnCities(weatherBank) {
     let userConditions = conditionsEl.value;
     let userRange = drivingRangeEl.value;
 
-    console.log(userTemperature);
-
-    for (i=0; i < weatherBank.length; i++){
-        
-    }
+    for (let i = 0; i < weatherBank.length; i++) {
+        let city = weatherBank[i];
+        let isMatch = true;
+    
+        // check if the temperature is within range
+        if (city.temperature < userTemperature - 10 || city.temperature > userTemperature + 10) {
+          isMatch = false;
+        }
+    
+        // check if the wind is within range
+        if (userWind === "low" && city.wind === "high") {
+          isMatch = false;
+        } else if (userWind === "high" && city.wind === "low") {
+          isMatch = false;
+        }
+    
+        // check if the weather conditions match
+        if (userConditions !== "" && city.weather !== userConditions) {
+          isMatch = false;
+        }
+    
+        // check if the distance is within the user's range
+        if (city.distance > userRange) {
+          isMatch = false;
+        }
+    
+        if (isMatch) {
+          returnedCities.push(city);
+        }
+      }
 
     console.log(returnedCities);
+
 }
 submitBtn.addEventListener("click",returnCities);
 
