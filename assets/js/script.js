@@ -38,6 +38,9 @@ function move() {
                 width++;
                 elem.style.width = width + "%";
             }
+           function hide () {
+               document.getElementById("myBar").style.display = "none";
+           }
         }
     }
 }
