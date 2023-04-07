@@ -20,6 +20,27 @@ const windRangeEl = document.querySelector("#windRange");
 const conditionsEl = document.querySelector("#conditions");
 const drivingRangeEl = document.querySelector("#drivingRange");
 const submitBtn = document.querySelector("#submitButton");
+const cityContainerEl = document.querySelector("#citiesContainer");
+
+var i = 0;
+function move() {
+    if (i == 0) {
+        i = 1;
+        var elem = document.getElementById("myBar");
+        var width = 1;
+        var id = setInterval(frame, 10);
+        function frame() {
+            if (width >= 100) {
+                clearInterval(id);
+                i = 0;
+            } else {
+                width++;
+                elem.style.width = width + "%";
+            }
+        }
+    }
+}
+
 
 let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "San Francisco",
  "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
@@ -91,16 +112,30 @@ function checkCities(weatherBank) {
 }
 
 function displayCities(returnedCities){
+    let weatherTemplate = ``;
+
     for (let i = 0; i < returnedCities.length; i++){
         let city = returnedCities[i];
 
         let setCity = city.city;
-        let setTemp = city.temperature;
-        let setConditions = city.weather;
         let setDistance = city.distance;
+        let setIcon = city.icon;
+        let setConditions = city.weather;
+        let setTemp = city.temperature;
+        let setWind = city.Wind;
         
+        weatherTemplate += `
+        <div>
+            <h3>${setCity}</h3>
+            <h4>${setDistance}</h4>
+            <h5><img src = "${setIcon}"> ${setConditions}</h5>
+            <ul id = "weatherList">
+                <li>Temperature: ${setTemp}&#8457;</li>
+                <li>Wind: ${setWind} mph</li> 
+            </ul>
+        </div>`;
 
-
+        cityContainerEl.innerHTML = weatherTemplate;
     }
 }
 submitBtn.addEventListener("click",checkCities);
@@ -144,6 +179,7 @@ async function getForecast(lat, lon, city, distance) {
     // fetch forecast data
     const response = await fetch(forecastURL);
     const forecastData = await response.json();
+    console.log(forecastData);
 
     let temperature = '';
 
@@ -159,6 +195,7 @@ async function getForecast(lat, lon, city, distance) {
 
     let weather = {
         city: forecastData.city.name,
+        icon: "https://openweathermap.org/img/wn/" + forecastData.weather[0].icon + "@2x.png",
         temperature: temperature,
         wind: forecastData.list[0].wind.speed < 10 ? "low" : "high",
         weather: forecastData.list[0].weather[0].main,
