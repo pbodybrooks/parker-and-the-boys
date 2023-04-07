@@ -20,6 +20,7 @@ const windRangeEl = document.querySelector("#windRange");
 const conditionsEl = document.querySelector("#conditions");
 const drivingRangeEl = document.querySelector("#drivingRange");
 const submitBtn = document.querySelector("#submitButton");
+const cityContainerEl = document.querySelector("#citiesContainer");
 
 var i = 0;
 function move() {
@@ -39,6 +40,14 @@ function move() {
         }
     }
 }
+
+window.onload = function () {
+    if (!localStorage.getItem("weatherBank")) {
+        // run function if local storage is empty
+        fillWeatherBank();
+    }
+}
+
 
 
 let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "San Francisco",
@@ -111,16 +120,30 @@ function checkCities(weatherBank) {
 }
 
 function displayCities(returnedCities){
+    let weatherTemplate = ``;
+
     for (let i = 0; i < returnedCities.length; i++){
         let city = returnedCities[i];
 
         let setCity = city.city;
-        let setTemp = city.temperature;
-        let setConditions = city.weather;
         let setDistance = city.distance;
+        let setIcon = city.icon;
+        let setConditions = city.weather;
+        let setTemp = city.temperatureVal;
+        let setWind = city.windVal;
         
+        weatherTemplate += `
+        <div>
+            <h3>${setCity}</h3>
+            <h4>${setDistance} miles away</h4>
+            <h5><img src = "${setIcon}"> ${setConditions}</h5>
+            <ul id = "weatherList">
+                <li>Temperature: ${setTemp}&#8457;</li>
+                <li>Wind: ${setWind} mph</li> 
+            </ul>
+        </div>`;
 
-
+        cityContainerEl.innerHTML = weatherTemplate;
     }
 }
 submitBtn.addEventListener("click",checkCities);
@@ -164,23 +187,27 @@ async function getForecast(lat, lon, city, distance) {
     // fetch forecast data
     const response = await fetch(forecastURL);
     const forecastData = await response.json();
+    // console.log(forecastData);
 
-    let temperature = '';
+    let tempSetting = '';
 
     if (forecastData.list[0].main.temp > 80) {
-        temperature = "hot";
+        tempSetting = "hot";
     }
     else if (forecastData.list[0].main.temp < 50) {
-        temperature = "cold";
+        tempSetting = "cold";
     }
     else {
-        temperature = "moderate";
+        tempSetting = "moderate";
     }
 
     let weather = {
         city: forecastData.city.name,
-        temperature: temperature,
-        wind: forecastData.list[0].wind.speed < 10 ? "low" : "high",
+        icon: "https://openweathermap.org/img/wn/" + forecastData.list[0].weather[0].icon + "@2x.png",
+        temperatureSetting: tempSetting,
+        temperatureVal: forecastData.list[0].main.temp,
+        windSetting: forecastData.list[0].wind.speed < 10 ? "low" : "high",
+        windVal: forecastData.list[0].wind.speed, 
         weather: forecastData.list[0].weather[0].main,
         distance: distance
     };
@@ -193,7 +220,7 @@ function getUserLocation() {
             navigator.geolocation.getCurrentPosition(position => {
                 userLat = parseFloat(position.coords.latitude);
                 userLon = parseFloat(position.coords.longitude);
-                console.log("Function: showPosition\nuserLat: " + userLat + "\nuserLon: " + userLon);
+                // console.log("Function: showPosition\nuserLat: " + userLat + "\nuserLon: " + userLon);
                 resolve();
             });
         } else {
@@ -212,7 +239,7 @@ function showPosition(position) {
 
 function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
     const R = 3958.8; // Radius of the earth in miles
-    console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+    // console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
 
     const dLat = deg2rad(userLat-lat);
     const dLon = deg2rad(userLon-lon); 
