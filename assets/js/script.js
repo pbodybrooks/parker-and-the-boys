@@ -37,6 +37,7 @@ function move() {
             } else {
                 width++;
                 elem.style.width = width + "%";
+                elem.innerHTML = width * 1 + "%";
                 }
                 setTimeout(function(){
                     elem.style.display = "none";
