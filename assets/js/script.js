@@ -21,6 +21,7 @@ const conditionsEl = document.querySelector("#conditions");
 const drivingRangeEl = document.querySelector("#drivingRange");
 const submitBtn = document.querySelector("#submitButton");
 
+//function for moving the progress bar
 var i = 0;
 function move() {
     if (i == 0) {
