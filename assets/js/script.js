@@ -21,14 +21,14 @@ const conditionsEl = document.querySelector("#conditions");
 const drivingRangeEl = document.querySelector("#drivingRange");
 const submitBtn = document.querySelector("#submitButton");
 
-//function for moving the progress bar
-var i = 0;
+
 function move() {
+    var i = 0;
     if (i == 0) {
         i = 1;
         var elem = document.getElementById("myBar");
         var width = 1;
-        var id = setInterval(frame, 10);
+        var id = setInterval(frame, 40);
         function frame() {
             if (width >= 100) {
                 clearInterval(id);
@@ -37,11 +37,9 @@ function move() {
                 width++;
                 elem.style.width = width + "%";
             }
-            
-                
-            }
         }
     }
+}
 
 
 
@@ -130,6 +128,9 @@ function displayCities(returnedCities){
 submitBtn.addEventListener("click",checkCities);
 
 function fillWeatherBank() {
+
+    move();
+
     // First, get users location coordinates
     getUserLocation().then(() => {
         // Second, after a 5 second delay:
