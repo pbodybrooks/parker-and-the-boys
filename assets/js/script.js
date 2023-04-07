@@ -34,6 +34,22 @@ function returnCities(weatherBank) {
     let userConditions = conditionsEl.value;
     let userRange = drivingRangeEl.value;
 
+    if (userTemperature === "null") {
+        alert("Please enter a desired temperature range.");
+    }
+
+    if (userWind === "null") {
+        alert("Please enter desired wind conditions.");
+    }
+
+    if (userConditions === "null") {
+        alert("Please enter desired weather conditions.");
+    }
+
+    if (userRange === "null") {
+        alert("Please enter a desired distance to destination.");
+    }
+
     for (let i = 0; i < weatherBank.length; i++) {
         let city = weatherBank[i];
         let isMatch = true;
