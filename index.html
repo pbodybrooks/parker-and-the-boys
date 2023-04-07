@@ -11,17 +11,6 @@
 </head>
 
 <body>
-    <style>
-        body {
-            background-image: url("./assets/images/weekend.jpg");
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        
-        }
-    </style>
-
     <!-- Added container -->
     <main class="container">
 
@@ -45,8 +34,10 @@
                         <button value="49" id="mod">Cold [Below 50&#8457]</button>
                     </ul>
                 </details> -->
+                <div>
                 <select id="tempRange">
                     <optgroup label="Temperature Preferences">
+                        <option value=null id="nullTemp">Select a Temperature Range</option>
                         <option value="81" id="hot">Hot [Above 80&#8457]</option>
                         <option value="50" id="mod">Moderate [50&#8457 - 80&#8457]</option>
                         <option value="49" id="cold">Cold [Below 50&#8457]</option>
@@ -54,12 +45,14 @@
                 </select>
                 <select id="windRange">
                     <optgroup label="Wind Preferences">
+                        <option value="null" id="nullWind">Select a Wind Range</option>
                         <option value="low" id="lowWind">Low</option>
                         <option value="high" id="highWind">High</option>
                     </optgroup>
                 </select>
                 <select id="conditions">
                     <optgroup label="Conditions Preferences">
+                        <option value="null" id="nullCondtion">Select a Condition</option>
                         <option value="Clear" id="clear">Clear</option>
                         <option value="Cloudy" id="cloudy">Cloudy</option>
                         <option value="Rain" id="rain">Rain</option>
@@ -69,48 +62,16 @@
                 </select>
                 <select id="drivingRange">
                     <optgroup label="Range Preferences">
+                        <option value="null" id="nullRange">Select a Range</option>
                         <option value="501" id="longRange">Further than 500 Miles</option>
                         <option value="250" id="mediumRange">100-500 miles</option>
                         <option value="99" id="shortRange">Less than 100 miles</option>
                     </optgroup>
                 </select>
-                <details role="list">
-                  <summary aria-haspopup="listbox" role="button">
-                      Wind
-                  </summary>
-                  <ul role="listbox">
-                      <button>Low [0 - 10 mph]</button>
-                      <button>High [Above 10 mph]</button>
-                  </ul>
-                </details>
-            <!-- Contrast  -->
-            <!-- added buttons for dropdown boxes -->
-            <!-- new quotes -->
-            <details role="list">
-              <summary aria-haspopup="listbox" role="button">
-                  Conditions
-              </summary>
-              <ul role="listbox">
-                  <button>Clear Skies</button>
-                  <button>Cloudy</button>
-                  <button>Rain</button>
-                  <button>Thunder</button>
-                  <button>Snow</button>
-              </ul>
-            </details>
-            <details role="list">
-                <summary aria-haspopup="listbox" role="button">
-                    Hotel prices
-                </summary>
-                <ul role="listbox">
-                    <button>Rich as fuck</button>
-                    <button>Your on a budget</button>
-                    <button>poor as fuck</button>
-                </ul>
-            </details>
-            <button id="submitButton"> Submit </button>
-            
             <main class="container"></main>
+            </div>
+            <!-- This is the scetion for the right side of the website -->
+            <div>1</div>
         </div>
         <script src="./assets/js/script.js"></script>
     </main>
