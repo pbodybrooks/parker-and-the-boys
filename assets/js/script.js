@@ -25,7 +25,6 @@ let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denve
  "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
 let weatherBank = [];
 
-
 function checkCities(weatherBank) {
     weatherBank = JSON.parse(localStorage.getItem("weatherBank"));
     let returnedCities = [];
@@ -85,11 +84,24 @@ function checkCities(weatherBank) {
         }
       }
 
+    returnedCities.sort((a, b) => a.distance - b.distance);
     console.log(returnedCities);
 
     displayCities(returnedCities)
+}
+
+function displayCities(returnedCities){
+    for (let i = 0; i < returnedCities.length; i++){
+        let city = returnedCities[i];
+
+        let setCity = city.city;
+        let setTemp = city.temperature;
+        let setConditions = city.weather;
+        let setDistance = city.distance;
+        
 
 
+    }
 }
 submitBtn.addEventListener("click",checkCities);
 
