@@ -49,24 +49,43 @@ let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denve
  "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
 let weatherBank = [];
 
-
-function returnCities(weatherBank) {
+function checkCities(weatherBank) {
     weatherBank = JSON.parse(localStorage.getItem("weatherBank"));
     let returnedCities = [];
-    let userTemperature = parseInt(tempRangeEl.value);
+    let userTemperature = (tempRangeEl.value);
     let userWind = windRangeEl.value;
     let userConditions = conditionsEl.value;
     let userRange = drivingRangeEl.value;
+
+    if (userTemperature === "null") {
+        alert("Please enter a desired temperature range.");
+    }
+
+    if (userWind === "null") {
+        alert("Please enter desired wind conditions.");
+    }
+
+    if (userConditions === "null") {
+        alert("Please enter desired weather conditions.");
+    }
+
+    if (userRange === "null") {
+        alert("Please enter a desired distance to destination.");
+    }
 
     for (let i = 0; i < weatherBank.length; i++) {
         let city = weatherBank[i];
         let isMatch = true;
     
         // check if the temperature is within range
-        if (city.temperature < userTemperature - 10 || city.temperature > userTemperature + 10) {
-          isMatch = false;
+        if (userTemperature === "hot" && (city.temperature === "moderate" || city.temperature === "cold")) {
+            isMatch = false;
+        } else if (userTemperature === "moderate" && (city.temperature === "hot" || city.temperature === "cold")) {
+            isMatch = false;
+        } else if (userTemperature === "cold" && (city.temperature === "hot" || city.temperature === "moderate")) {
+            isMatch = false;
         }
-    
+        
         // check if the wind is within range
         if (userWind === "low" && city.wind === "high") {
           isMatch = false;
@@ -89,10 +108,26 @@ function returnCities(weatherBank) {
         }
       }
 
+    returnedCities.sort((a, b) => a.distance - b.distance);
     console.log(returnedCities);
 
+    displayCities(returnedCities)
 }
-submitBtn.addEventListener("click",returnCities);
+
+function displayCities(returnedCities){
+    for (let i = 0; i < returnedCities.length; i++){
+        let city = returnedCities[i];
+
+        let setCity = city.city;
+        let setTemp = city.temperature;
+        let setConditions = city.weather;
+        let setDistance = city.distance;
+        
+
+
+    }
+}
+submitBtn.addEventListener("click",checkCities);
 
 function fillWeatherBank() {
     // First, get users location coordinates
@@ -134,9 +169,21 @@ async function getForecast(lat, lon, city, distance) {
     const response = await fetch(forecastURL);
     const forecastData = await response.json();
 
+    let temperature = '';
+
+    if (forecastData.list[0].main.temp > 80) {
+        temperature = "hot";
+    }
+    else if (forecastData.list[0].main.temp < 50) {
+        temperature = "cold";
+    }
+    else {
+        temperature = "moderate";
+    }
+
     let weather = {
         city: forecastData.city.name,
-        temperature: forecastData.list[0].main.temp,
+        temperature: temperature,
         wind: forecastData.list[0].wind.speed < 10 ? "low" : "high",
         weather: forecastData.list[0].weather[0].main,
         distance: distance
@@ -189,12 +236,13 @@ return deg * (Math.PI/180)
 }
 
 function simulateSubmittedCritera() {
-    fillWeatherBank();
-    getCoords(city);
-    getUserLocation();
-    setTimeout(function () {
-        getDistance(userLat, userLon, lat, lon, city);
-    }, delay); 
+    localStorage.clear();
+    // fillWeatherBank();
+    // getCoords(city);
+    // getUserLocation();
+    // setTimeout(function () {
+    //     getDistance(userLat, userLon, lat, lon, city);
+    // }, delay); 
 }
 
 function toTitleCase(str) {
@@ -203,7 +251,7 @@ function toTitleCase(str) {
     });
 }
 
-// simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
+simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
 fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
 
 
