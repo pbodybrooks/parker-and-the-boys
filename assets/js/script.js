@@ -22,7 +22,6 @@ let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denve
  "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
 let weatherBank = [];
 
-
 window.onload = function () {
     if (!localStorage.getItem("weatherBank")) {
         // run function if local storage is empty
@@ -126,7 +125,7 @@ function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
 
 function deg2rad(deg) {
     return deg * (Math.PI/180)
-    }
+}
 
 async function getForecast(lat, lon, city, distance) {
     let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + OpenWeatherAPIKey + "&units=imperial";
@@ -163,7 +162,7 @@ async function getForecast(lat, lon, city, distance) {
 function checkCities(weatherBank) {
     weatherBank = JSON.parse(localStorage.getItem("weatherBank"));
     let returnedCities = [];
-    let userTemperature = (tempRangeEl.value);
+    let userTemperature = tempRangeEl.value;
     let userWind = windRangeEl.value;
     let userConditions = conditionsEl.value;
     let userRange = drivingRangeEl.value;
@@ -254,55 +253,12 @@ function displayCities(returnedCities){
     }
 }
 
-// there are two fillWeatherBank functions
-// function fillWeatherBank() {
-//     move();
-
-//     // First, get users location coordinates
-//     getUserLocation().then(() => {
-//         // Second, after a 5 second delay:
-//         setTimeout(async function () {
-//             // For each city in the cityBank
-//             for (const city of MVPcityBank) {
-//                 // Get city coordinates
-//                 await getCoords(city);
-//                 // Calculate distance between user and each city
-//                 const distance = getDistance(userLat, userLon, lat, lon, city);
-//                 // Get weather for each city and fill the weatherBank
-//                 await getForecast(lat, lon, city, distance);
-//             }
-//             localStorage.setItem("weatherBank", JSON.stringify(weatherBank));
-//             console.log("Weather Bank: ");
-//             console.log(weatherBank);
-//             return weatherBank;
-//         }, 1000);
-//     }); 
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
 clearStorageBtn.addEventListener("click", clearStorage);
 fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
 submitBtn.addEventListener("click",checkCities);
 
 function clearStorage() {
     localStorage.clear();
-    // fillWeatherBank();
-    // getCoords(city);
-    // getUserLocation();
-    // setTimeout(function () {
-    //     getDistance(userLat, userLon, lat, lon, city);
-    // }, delay); 
 }
 
 function toTitleCase(str) {
