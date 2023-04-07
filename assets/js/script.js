@@ -37,9 +37,12 @@ function move() {
                 width++;
                 elem.style.width = width + "%";
             }
+            
+                
+            }
         }
     }
-}
+
 
 
 let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "San Francisco",
