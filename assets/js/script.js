@@ -9,19 +9,50 @@ let userLon;
 
 const delay = 5000;
 
-const simulateSubmitBtn = document.querySelector("#simulate-submit");
-const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
-
-// const hotBtn = document.querySelector("#hot");
-// const modBtn = document.querySelector("#mod");
-// const coldBtn = document.querySelector("#cold");
 const tempRangeEl = document.querySelector("#tempRange");
 const windRangeEl = document.querySelector("#windRange");
 const conditionsEl = document.querySelector("#conditions");
 const drivingRangeEl = document.querySelector("#drivingRange");
 const submitBtn = document.querySelector("#submitButton");
 const cityContainerEl = document.querySelector("#citiesContainer");
+const clearStorageBtn = document.querySelector("#simulate-submit");
+const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 
+let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "San Francisco",
+ "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
+let weatherBank = [];
+
+
+window.onload = function () {
+    if (!localStorage.getItem("weatherBank")) {
+        // run function if local storage is empty
+        fillWeatherBank();
+    }
+}
+
+function fillWeatherBank() {
+    move();
+
+    // First, get users location coordinates
+    getUserLocation().then(() => {
+        // Second, after a 5 second delay:
+        setTimeout(async function () {
+            // For each city in the cityBank
+            for (const city of MVPcityBank) {
+                // Get city coordinates
+                await getCoords(city);
+                // Calculate distance between user and each city
+                const distance = getDistance(userLat, userLon, lat, lon, city);
+                // Get weather for each city and fill the weatherBank
+                await getForecast(lat, lon, city, distance);
+            }
+            localStorage.setItem("weatherBank", JSON.stringify(weatherBank));
+            console.log("Weather Bank: ");
+            console.log(weatherBank);
+            return weatherBank;
+        }, 1000);
+    }); 
+}
 
 function move() {
     var i = 0;
@@ -42,19 +73,92 @@ function move() {
     }
 }
 
-window.onload = function () {
-    if (!localStorage.getItem("weatherBank")) {
-        // run function if local storage is empty
-        fillWeatherBank();
-    }
+function getUserLocation() {
+    return new Promise((resolve, reject) => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                userLat = parseFloat(position.coords.latitude);
+                userLon = parseFloat(position.coords.longitude);
+                // console.log("Function: showPosition\nuserLat: " + userLat + "\nuserLon: " + userLon);
+                resolve();
+            });
+        } else {
+            reject('Geolocation may not be supported by this browser. Please ensure Location Access is set to "Allowed"');
+        }
+    });
 }
 
+// function showPosition(position) {
+//     userLat = parseFloat(position.coords.latitude);
+//     userLon = parseFloat(position.coords.longitude);
+//     console.log("Function: showPosition\nuserLat: " + userLat + "\nuserLon: " + userLon);
+//     // getDistance(userLat, userLon, lat, lon);
+//     return (userLat, userLon);
+// }
 
+async function getCoords(city) {
+    const geoURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
+    // fetch geo data
+    const response = await fetch(geoURL);
+    const geoData = await response.json();
 
+    // store latitude and longitude values
+    lat = parseFloat(geoData.coord.lat);
+    lon = parseFloat(geoData.coord.lon);
+}
 
-let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "San Francisco",
- "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
-let weatherBank = [];
+function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
+    const R = 3958.8; // Radius of the earth in miles
+    // console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
+
+    const dLat = deg2rad(userLat-lat);
+    const dLon = deg2rad(userLon-lon); 
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(lat)) * Math.cos(deg2rad(userLat)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2)
+      ; 
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    const distance = Math.round(R * c);
+    console.log("Distance between your current location and " + city + " is approximately " + distance + " miles.");
+    return distance;
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI/180)
+    }
+
+async function getForecast(lat, lon, city, distance) {
+    let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + OpenWeatherAPIKey + "&units=imperial";
+    // fetch forecast data
+    const response = await fetch(forecastURL);
+    const forecastData = await response.json();
+    // console.log(forecastData);
+
+    let tempSetting = '';
+
+    if (forecastData.list[0].main.temp > 80) {
+        tempSetting = "hot";
+    }
+    else if (forecastData.list[0].main.temp < 50) {
+        tempSetting = "cold";
+    }
+    else {
+        tempSetting = "moderate";
+    }
+
+    let weather = {
+        city: forecastData.city.name,
+        icon: "https://openweathermap.org/img/wn/" + forecastData.list[0].weather[0].icon + "@2x.png",
+        temperatureSetting: tempSetting,
+        temperatureVal: forecastData.list[0].main.temp,
+        windSetting: forecastData.list[0].wind.speed < 10 ? "low" : "high",
+        windVal: forecastData.list[0].wind.speed, 
+        weather: forecastData.list[0].weather[0].main,
+        distance: distance
+    };
+    weatherBank.push(weather);
+}
 
 function checkCities(weatherBank) {
     weatherBank = JSON.parse(localStorage.getItem("weatherBank"));
@@ -116,6 +220,7 @@ function checkCities(weatherBank) {
       }
 
     returnedCities.sort((a, b) => a.distance - b.distance);
+    console.log("Cities matching your criteria are:")
     console.log(returnedCities);
 
     displayCities(returnedCities)
@@ -148,122 +253,49 @@ function displayCities(returnedCities){
         cityContainerEl.innerHTML = weatherTemplate;
     }
 }
+
+// there are two fillWeatherBank functions
+// function fillWeatherBank() {
+//     move();
+
+//     // First, get users location coordinates
+//     getUserLocation().then(() => {
+//         // Second, after a 5 second delay:
+//         setTimeout(async function () {
+//             // For each city in the cityBank
+//             for (const city of MVPcityBank) {
+//                 // Get city coordinates
+//                 await getCoords(city);
+//                 // Calculate distance between user and each city
+//                 const distance = getDistance(userLat, userLon, lat, lon, city);
+//                 // Get weather for each city and fill the weatherBank
+//                 await getForecast(lat, lon, city, distance);
+//             }
+//             localStorage.setItem("weatherBank", JSON.stringify(weatherBank));
+//             console.log("Weather Bank: ");
+//             console.log(weatherBank);
+//             return weatherBank;
+//         }, 1000);
+//     }); 
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+clearStorageBtn.addEventListener("click", clearStorage);
+fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
 submitBtn.addEventListener("click",checkCities);
 
-function fillWeatherBank() {
-
-    move();
-
-    // First, get users location coordinates
-    getUserLocation().then(() => {
-        // Second, after a 5 second delay:
-        setTimeout(async function () {
-            // For each city in the cityBank
-            for (const city of MVPcityBank) {
-                // Get city coordinates
-                await getCoords(city);
-                // Calculate distance between user and each city
-                const distance = getDistance(userLat, userLon, lat, lon, city);
-                // Get weather for each city and fill the weatherBank
-                await getForecast(lat, lon, city, distance);
-            }
-            localStorage.setItem("weatherBank", JSON.stringify(weatherBank));
-            console.log("Weather Bank: ");
-            console.log(weatherBank);
-            return weatherBank;
-        }, 1000);
-    });
-    
-}
-
-async function getCoords(city) {
-    const geoURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + OpenWeatherAPIKey;
-    // fetch geo data
-    const response = await fetch(geoURL);
-    const geoData = await response.json();
-
-    // store latitude and longitude values
-    lat = parseFloat(geoData.coord.lat);
-    lon = parseFloat(geoData.coord.lon);
-}
-
-async function getForecast(lat, lon, city, distance) {
-    let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + OpenWeatherAPIKey + "&units=imperial";
-    // fetch forecast data
-    const response = await fetch(forecastURL);
-    const forecastData = await response.json();
-    // console.log(forecastData);
-
-    let tempSetting = '';
-
-    if (forecastData.list[0].main.temp > 80) {
-        tempSetting = "hot";
-    }
-    else if (forecastData.list[0].main.temp < 50) {
-        tempSetting = "cold";
-    }
-    else {
-        tempSetting = "moderate";
-    }
-
-    let weather = {
-        city: forecastData.city.name,
-        icon: "https://openweathermap.org/img/wn/" + forecastData.list[0].weather[0].icon + "@2x.png",
-        temperatureSetting: tempSetting,
-        temperatureVal: forecastData.list[0].main.temp,
-        windSetting: forecastData.list[0].wind.speed < 10 ? "low" : "high",
-        windVal: forecastData.list[0].wind.speed, 
-        weather: forecastData.list[0].weather[0].main,
-        distance: distance
-    };
-    weatherBank.push(weather);
-}
-
-function getUserLocation() {
-    return new Promise((resolve, reject) => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                userLat = parseFloat(position.coords.latitude);
-                userLon = parseFloat(position.coords.longitude);
-                // console.log("Function: showPosition\nuserLat: " + userLat + "\nuserLon: " + userLon);
-                resolve();
-            });
-        } else {
-            reject('Geolocation may not be supported by this browser. Please ensure Location Access is set to "Allowed"');
-        }
-    });
-}
-
-function showPosition(position) {
-    userLat = parseFloat(position.coords.latitude);
-    userLon = parseFloat(position.coords.longitude);
-    console.log("Function: showPosition\nuserLat: " + userLat + "\nuserLon: " + userLon);
-    // getDistance(userLat, userLon, lat, lon);
-    return (userLat, userLon);
-}
-
-function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
-    const R = 3958.8; // Radius of the earth in miles
-    // console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
-
-    const dLat = deg2rad(userLat-lat);
-    const dLon = deg2rad(userLon-lon); 
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(deg2rad(lat)) * Math.cos(deg2rad(userLat)) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2)
-      ; 
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    const distance = Math.round(R * c);
-    console.log("Distance between your current location and " + city + " is approximately " + distance + " miles.");
-    return distance;
-}
-
-function deg2rad(deg) {
-return deg * (Math.PI/180)
-}
-
-function simulateSubmittedCritera() {
+function clearStorage() {
     localStorage.clear();
     // fillWeatherBank();
     // getCoords(city);
@@ -278,10 +310,6 @@ function toTitleCase(str) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
-
-simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
-fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
-
 
 
 ///////////////////////////////
@@ -388,7 +416,7 @@ fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
 //     });
 // }
 
-// simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
+// clearStorageBtn.addEventListener("click", simulateSubmittedCritera);
 // fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
 
 
