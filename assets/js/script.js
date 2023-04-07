@@ -37,13 +37,15 @@ function move() {
             } else {
                 width++;
                 elem.style.width = width + "%";
-            }
-           function hide () {
-               document.getElementById("myBar").style.display = "none";
+                }
+                setTimeout(function(){
+                    elem.style.display = "none";
+                }, 4000);
+
+                }
            }
         }
-    }
-}
+    
 
 window.onload = function () {
     if (!localStorage.getItem("weatherBank")) {
