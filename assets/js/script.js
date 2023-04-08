@@ -42,6 +42,9 @@ function move() {
             if (width == 100) {
                 elem.style.display = "none";
             }
+            else {
+                if (width == 0) {
+                    elem.style.display = "block";
 
                 }
            }
