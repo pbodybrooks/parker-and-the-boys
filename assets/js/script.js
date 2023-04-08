@@ -39,9 +39,9 @@ function move() {
                 elem.style.width = width + "%";
                 elem.innerHTML = width * 1 + "%";
                 }
-                setTimeout(function(){
-                    elem.style.display = "none";
-                }, 4000);
+            if (width == 100) {
+                elem.style.display = "none";
+            }
 
                 }
            }
