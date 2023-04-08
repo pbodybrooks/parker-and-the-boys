@@ -49,7 +49,8 @@ function move() {
                 }
            }
         }
-    
+    }   
+}
 
 window.onload = function () {
     if (!localStorage.getItem("weatherBank")) {
