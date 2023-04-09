@@ -14,16 +14,21 @@
     <!-- Added container -->
     <main class="container">
 
-      <button type="button" id="simulate-submit" class="btn btn-primary">Clear local storage [remove before deployement]</button>
+        <button type="button" id="simulate-submit" class="btn btn-primary">Clear local storage [remove before
+            deployement]</button>
 
-      <button type="button" id="fill-weatherBank" class="btn btn-primary">Fill the Weather Bank!</button>
-      <!-- <button type="button" id="test-btn" class="btn btn-primary">getCoords</button> -->
-      <!-- <button type="button" id="test-btn2" class="btn btn-primary">getLocation</button>
+        <button type="button" id="fill-weatherBank" class="btn btn-primary">Fill the Weather Bank!</button>
+        <!-- <button type="button" id="test-btn" class="btn btn-primary">getCoords</button> -->
+        <!-- <button type="button" id="test-btn2" class="btn btn-primary">getLocation</button>
       <button type="button" id="test-btn3" class="btn btn-primary">getDistance</button> -->
+      <div id="myProgress">
+        <div id="myBar"></div>
 
-        
+        <main class="container"></main>
+    </div>
+
         <div class="grid">
-                <!-- <details role="list">
+            <!-- <details role="list">
                     <summary aria-haspopup="listbox" role="button" class="secondary">
                         Mid-Day Temperature
                     </summary>
@@ -33,7 +38,7 @@
                         <button value="49" id="mod">Cold [Below 50&#8457]</button>
                     </ul>
                 </details> -->
-                <div>
+            <div>
                 <select id="tempRange">
                     <optgroup label="Temperature Preferences">
                         <option value="null" id="nullTemp">Select a Temperature Range</option>
@@ -66,15 +71,17 @@
                         <option value="250" id="mediumRange">100-500 miles</option>
                         <option value="99" id="shortRange">Less than 100 miles</option>
                     </optgroup>
-                    
+
                 </select>
                 <button id="submitButton">Get Cities!</button>
-                <div id="myProgress">
+                <!-- <div id="myProgress">
                     <div id="myBar"></div>
-        
-            <main class="container"></main>
+
+                    <main class="container"></main>
+                </div> -->
+                <!-- This is the scetion for the right side of the website -->
+                
             </div>
-            <!-- This is the scetion for the right side of the website -->
             <div id="citiesContainer">1</div>
         </div>
         <script src="./assets/js/script.js"></script>
