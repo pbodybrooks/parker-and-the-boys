@@ -18,19 +18,18 @@ const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 
 // predefined bank of cities to be used to fill weather data in the weatherBank
 // extended weatherBank:
-let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lake City", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "Miami", 
- "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls", "Atlanta", 
- "Miami", "Charlotte", "Houston", "Fargo", "Chicago", "San Antonio", "San Diego", "Dallas", "Austin", "Jacksonville", "Fort Worth", "San Jose", "Columbus", "Indianapolis", 
- "San Fransisco", "Oklahoma City", "El Paso", "Nashville", "Memphis", "Louisville", "Detroit", "Boston", "Baltimore", "Milwaukee"]
-;
+// let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lake City", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "Miami", 
+//  "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls", "Atlanta", 
+//  "Miami", "Charlotte", "Houston", "Fargo", "Chicago", "San Antonio", "San Diego", "Dallas", "Austin", "Jacksonville", "Fort Worth", "San Jose", "Columbus", "Indianapolis", 
+//  "San Fransisco", "Oklahoma City", "El Paso", "Nashville", "Memphis", "Louisville", "Detroit", "Boston", "Baltimore", "Milwaukee"]
+// ;
 
 // abridged weatherBank:
-// let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lake City", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "Miami", 
-// "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City"];
+let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lake City", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "Miami", 
+"Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City"];
 
 // initialize weatherBank as an empty array
 let weatherBank = [];
-
 
 // on first page visit, when page loads, fill the weatherbank
 window.onload = function () {
@@ -57,7 +56,6 @@ window.onload = function () {
     // }
 
 }
-
 
 // fills the weatherbank for predefined bank of cities
 function fillWeatherBank() {
@@ -187,70 +185,67 @@ async function getForecast(lat, lon, city, distance) {
     const forecastData = await response.json();
     
     // for (let i=0; i < forecastData.list.length; i++){
-    //     // deconstruct all necessary forecast data
     //     let forecastUNIX = forecastData.list[i].dt;
-    //     let forecastDate = dayjs.unix(forecastUNIX).format('MMM D, YYYY');
     //     let checkDate = dayjs.unix(forecastUNIX).format('HH');
-    //     let forecastIcon = "https://openweathermap.org/img/wn/" + forecastData.list[i].weather[0].icon + "@2x.png";
-    //     let forecastDescription = toTitleCase(forecastData.list[i].weather[0].description);
-    //     let forecastTemp = forecastData.list[i].main.temp;
-    //     let forecastWind = forecastData.list[i].wind.speed;
-    //     let forecastHumidity = forecastData.list[i].main.humidity;
 
-    //     // for easier sorting of cities, tempSetting is set as an empty string to be filled below
-    //     let tempSetting = '';
+    //     if (checkDate === '11' || checkDate === '12'){
 
-    //     // if temp is above 80, it is "hot"
-    //     if (forecastData.list[i].main.temp > 80) {
-    //         tempSetting = "hot";
-    //     }
-    //     // if temp is below 50, it is "cold"
-    //     else if (forecastData.list[i].main.temp < 50) {
-    //         tempSetting = "cold";
-    //     }
-    //     // otherwise, the temp is between 50 and 80 and it is "moderate"
-    //     else {
-    //         tempSetting = "moderate";
-    //     }
+    //         // for easier sorting of cities, tempSetting is set as an empty string to be filled below
+    //         let tempSetting = '';
 
-    //     // similarly, for easier sorting of cities by distance, distanceSetting is set as an empty string to be filled below
-    //     let distanceSetting = '';
+    //         // if temp is above 80, it is "hot"
+    //         if (forecastData.list[i].main.temp > 80) {
+    //             tempSetting = "hot";
+    //         }
+    //         // if temp is below 50, it is "cold"
+    //         else if (forecastData.list[i].main.temp < 50) {
+    //             tempSetting = "cold";
+    //         }
+    //         // otherwise, the temp is between 50 and 80 and it is "moderate"
+    //         else {
+    //             tempSetting = "moderate";
+    //         }
 
-    //     // if distance is above 500, it is "far"
-    //     if (distance > 500) {
-    //         distanceSetting = "far";
-    //     }
-    //     // if distance is below 100, it is "close"
-    //     else if (distance < 100) {
-    //         distanceSetting = "close";
-    //     }
-    //     // otherwise, the distance is between 100 and 500 and it is "medium"
-    //     else {
-    //         distanceSetting = "medium";
-    //     }
+    //         // similarly, for easier sorting of cities by distance, distanceSetting is set as an empty string to be filled below
+    //         let distanceSetting = '';
 
-    //     // create the weather object for each city we will be storing in the weatherBank array
-    //     // inside are all the key-value pairs needed for adequate sorting of cities and return of desired  weather data
-    //     let weather = {
-    //         city: forecastData.city.name,
-    //         icon: "https://openweathermap.org/img/wn/" + forecastData.list[0].weather[0].icon + "@2x.png",
-    //         // again, tempSetting simply defines "hot", "moderate", or "cold" for sorting purposes
-    //         temperatureSetting: tempSetting,
-    //         // tempVal on the other hand is used to push the actual temperature value to the user
-    //         temperatureVal: forecastData.list[0].main.temp,
-    //         // the same philosophy applies to wind. it is either low or high for easier sorting
-    //         windSetting: forecastData.list[0].wind.speed < 10 ? "low" : "high",
-    //         // windVal is used to display the actual wind speed value to the user
-    //         windVal: forecastData.list[0].wind.speed, 
-    //         // weather description (ie. cloudy, clear, snow, etc.)
-    //         weather: forecastData.list[0].weather[0].main,
-    //         // distanceSetting is either far, medium, or close
-    //         distanceSetting: distanceSetting,
-    //         // distanceVal is the actual distance in miles
-    //         distanceVal: distance
-    //     };
-    //     // push the weather objects for each city into the weatherBank array
-    //     weatherBank.push(weather);
+    //         // if distance is above 500, it is "far"
+    //         if (distance > 500) {
+    //             distanceSetting = "far";
+    //         }
+    //         // if distance is below 100, it is "close"
+    //         else if (distance < 100) {
+    //             distanceSetting = "close";
+    //         }
+    //         // otherwise, the distance is between 100 and 500 and it is "medium"
+    //         else {
+    //             distanceSetting = "medium";
+    //         }
+
+    //         // create the weather object for each city we will be storing in the weatherBank array
+    //         // inside are all the key-value pairs needed for adequate sorting of cities and return of desired  weather data
+    //         let weather = {
+    //             city: forecastData.city.name,
+    //             date: checkDate,
+    //             icon: "https://openweathermap.org/img/wn/" + forecastData.list[i].weather[0].icon + "@2x.png",
+    //             // again, tempSetting simply defines "hot", "moderate", or "cold" for sorting purposes
+    //             temperatureSetting: tempSetting,
+    //             // tempVal on the other hand is used to push the actual temperature value to the user
+    //             temperatureVal: forecastData.list[i].main.temp,
+    //             // the same philosophy applies to wind. it is either low or high for easier sorting
+    //             windSetting: forecastData.list[i].wind.speed < 10 ? "low" : "high",
+    //             // windVal is used to display the actual wind speed value to the user
+    //             windVal: forecastData.list[i].wind.speed, 
+    //             // weather description (ie. cloudy, clear, snow, etc.)
+    //             weather: forecastData.list[i].weather[0].main,
+    //             // distanceSetting is either far, medium, or close
+    //             distanceSetting: distanceSetting,
+    //             // distanceVal is the actual distance in miles
+    //             distanceVal: distance,
+    //             humidity: forecastData.list[i].main.humidity
+    //         };
+    //         // push the weather objects for each city into the weatherBank array
+    //         weatherBank.push(weather);
     // }
 
     // for easier sorting of cities, tempSetting is set as an empty string to be filled below
@@ -447,23 +442,3 @@ submitBtn.addEventListener("click", checkCities);
 function clearStorage() {
     localStorage.clear();
 }
-
-
-
-// function toTitleCase(str) {
-//     return str.replace(/\w\S*/g, function(txt){
-//         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-//     });
-// }
-
-
-
-
-
-
-
-
-
-
-
-
