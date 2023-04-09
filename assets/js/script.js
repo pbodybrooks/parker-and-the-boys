@@ -50,6 +50,8 @@ window.onload = function () {
         // localStorage.setItem('lastRunTime', now);
     }
 
+    document.getElementById("bottomSection").style.display="none";
+
     // // if weatherBank has not been filled within last 24 hours, clear old data and run function to fill it again
     // if (hoursSinceLastRun > 24) {  
     //     localStorage.clear();
