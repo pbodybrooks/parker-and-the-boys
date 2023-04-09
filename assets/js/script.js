@@ -113,6 +113,7 @@ function move() {
             if (width == 100) {
                 document.getElementById("myProgress").style.display = "none";
                 document.getElementById("myBar").style.display = "none";
+                document.getElementById("bottomSection").style.display="block";
             }
         }
     }
