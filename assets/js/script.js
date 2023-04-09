@@ -37,13 +37,19 @@ function move() {
             } else {
                 width++;
                 elem.style.width = width + "%";
-            }
+                elem.innerHTML = width * 1 + "%";
+                }
             if (width == 100) {
-                document.getElementById("myBar").style.display = "none";
-                document.getElementById("myProgress").style.display = "none";
+                elem.style.display = "none";
             }
+            else {
+                if (width == 0) {
+                    elem.style.display = "block";
+
+                }
+           }
         }
-    }
+    }   
 }
 
 window.onload = function () {
