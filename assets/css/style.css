@@ -1,4 +1,4 @@
-#myProgress {
+ #myProgress {
   width: 100%;
   height: 30px;
   background-color: #ddd;
@@ -7,5 +7,6 @@
 #myBar {
   width: 1%;
   height: 30px;
-  background-color: #18b618;
+  background-color: gray;
 }
+
