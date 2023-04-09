@@ -95,25 +95,25 @@ function fillWeatherBank() {
 
 // loading bar functionality
 function move() {
-    var i = 0;
-    if (i == 0) {
-        i = 1;
-        var elem = document.getElementById("myBar");
+    var i = 0; // this is the counter
+    if (i == 0) { 
+        i = 1; 
+        var elem = document.getElementById("myBar"); // this is the progress bar element
         var width = 1;
-        var id = setInterval(frame, 90);
-        function frame() {
-            if (width >= 100) {
+        var id = setInterval(frame, 200); // this is the speed of the progress bar
+        function frame() { 
+            if (width >= 100) { // this is the length of the progress bar
                 clearInterval(id);
-                i = 0;
-            } else {
+                i = 0; 
+            } else { 
                 width++;
                 elem.style.width = width + "%";
                 elem.innerHTML = width * 1 + "%";
-            }
+                }
             if (width == 100) {
                 document.getElementById("myProgress").style.display = "none";
                 document.getElementById("myBar").style.display = "none";
-                document.getElementById("bottomSection").style.display = "block";
+                document.getElementById("bottomSection").style.display="block";
             }
         }
     }
