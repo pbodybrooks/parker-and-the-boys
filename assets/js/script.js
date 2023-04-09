@@ -29,7 +29,6 @@ let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lak
 // "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City"];
 
 // initialize weatherBank as an empty array
-
 let weatherBank = [];
 
 
@@ -186,7 +185,73 @@ async function getForecast(lat, lon, city, distance) {
     // fetch forecast data
     const response = await fetch(forecastURL);
     const forecastData = await response.json();
-    // console.log(forecastData);
+    
+    // for (let i=0; i < forecastData.list.length; i++){
+    //     // deconstruct all necessary forecast data
+    //     let forecastUNIX = forecastData.list[i].dt;
+    //     let forecastDate = dayjs.unix(forecastUNIX).format('MMM D, YYYY');
+    //     let checkDate = dayjs.unix(forecastUNIX).format('HH');
+    //     let forecastIcon = "https://openweathermap.org/img/wn/" + forecastData.list[i].weather[0].icon + "@2x.png";
+    //     let forecastDescription = toTitleCase(forecastData.list[i].weather[0].description);
+    //     let forecastTemp = forecastData.list[i].main.temp;
+    //     let forecastWind = forecastData.list[i].wind.speed;
+    //     let forecastHumidity = forecastData.list[i].main.humidity;
+
+    //     // for easier sorting of cities, tempSetting is set as an empty string to be filled below
+    //     let tempSetting = '';
+
+    //     // if temp is above 80, it is "hot"
+    //     if (forecastData.list[i].main.temp > 80) {
+    //         tempSetting = "hot";
+    //     }
+    //     // if temp is below 50, it is "cold"
+    //     else if (forecastData.list[i].main.temp < 50) {
+    //         tempSetting = "cold";
+    //     }
+    //     // otherwise, the temp is between 50 and 80 and it is "moderate"
+    //     else {
+    //         tempSetting = "moderate";
+    //     }
+
+    //     // similarly, for easier sorting of cities by distance, distanceSetting is set as an empty string to be filled below
+    //     let distanceSetting = '';
+
+    //     // if distance is above 500, it is "far"
+    //     if (distance > 500) {
+    //         distanceSetting = "far";
+    //     }
+    //     // if distance is below 100, it is "close"
+    //     else if (distance < 100) {
+    //         distanceSetting = "close";
+    //     }
+    //     // otherwise, the distance is between 100 and 500 and it is "medium"
+    //     else {
+    //         distanceSetting = "medium";
+    //     }
+
+    //     // create the weather object for each city we will be storing in the weatherBank array
+    //     // inside are all the key-value pairs needed for adequate sorting of cities and return of desired  weather data
+    //     let weather = {
+    //         city: forecastData.city.name,
+    //         icon: "https://openweathermap.org/img/wn/" + forecastData.list[0].weather[0].icon + "@2x.png",
+    //         // again, tempSetting simply defines "hot", "moderate", or "cold" for sorting purposes
+    //         temperatureSetting: tempSetting,
+    //         // tempVal on the other hand is used to push the actual temperature value to the user
+    //         temperatureVal: forecastData.list[0].main.temp,
+    //         // the same philosophy applies to wind. it is either low or high for easier sorting
+    //         windSetting: forecastData.list[0].wind.speed < 10 ? "low" : "high",
+    //         // windVal is used to display the actual wind speed value to the user
+    //         windVal: forecastData.list[0].wind.speed, 
+    //         // weather description (ie. cloudy, clear, snow, etc.)
+    //         weather: forecastData.list[0].weather[0].main,
+    //         // distanceSetting is either far, medium, or close
+    //         distanceSetting: distanceSetting,
+    //         // distanceVal is the actual distance in miles
+    //         distanceVal: distance
+    //     };
+    //     // push the weather objects for each city into the weatherBank array
+    //     weatherBank.push(weather);
+    // }
 
     // for easier sorting of cities, tempSetting is set as an empty string to be filled below
     let tempSetting = '';
@@ -231,13 +296,13 @@ async function getForecast(lat, lon, city, distance) {
         temperatureVal: forecastData.list[0].main.temp,
         // the same philosophy applies to wind. it is either low or high for easier sorting
         windSetting: forecastData.list[0].wind.speed < 10 ? "low" : "high",
-
         // windVal is used to display the actual wind speed value to the user
         windVal: forecastData.list[0].wind.speed, 
         // weather description (ie. cloudy, clear, snow, etc.)
-
         weather: forecastData.list[0].weather[0].main,
+        // distanceSetting is either far, medium, or close
         distanceSetting: distanceSetting,
+        // distanceVal is the actual distance in miles
         distanceVal: distance
     };
     // push the weather objects for each city into the weatherBank array
@@ -295,7 +360,6 @@ function checkCities(weatherBank) {
         } else if (userTemperature === "cold" && (city.temperature === "hot" || city.temperature === "moderate")) {
             isMatch = false;
         }
-
         
         // check if the wind is within range - same philosphy as temperature above
         if (userWind === "low" && city.windSetting === "high") {
@@ -310,7 +374,6 @@ function checkCities(weatherBank) {
             isMatch = false;
         }
 
-    
         // distance filtering wasn't working in a previous attempt so I re-wrote it to work identically to how temperature is sorted.
         if (userRange === "far" && (city.distanceSetting === "medium" || city.distanceSetting === "close")) {
             isMatch = false;
@@ -321,7 +384,6 @@ function checkCities(weatherBank) {
         }
         
         // if the cities made it to the end of the gauntlet while maitaining a match value of true, then it is worthy of being pushed to returnedCities
-
         if (isMatch) {
             returnedCities.push(city);
         }
@@ -361,7 +423,7 @@ function displayCities(returnedCities){
         // build the template literal
 
         weatherTemplate += `
-        <div>
+        <div id="cityCard">
             <h3>${setCity}</h3>
             <h4>${setDistance} miles away</h4>
             <h5><img src = "${setIcon}"> ${setConditions}</h5>
