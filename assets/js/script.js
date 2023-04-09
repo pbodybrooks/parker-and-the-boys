@@ -19,7 +19,7 @@ const clearStorageBtn = document.querySelector("#simulate-submit");
 const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 
 let MVPcityBank = ["Tulsa", "Salt Lake City", "Los Angeles", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "San Francisco",
- "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
+    "Miami", "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls"];
 let weatherBank = [];
 
 window.onload = function () {
@@ -27,6 +27,7 @@ window.onload = function () {
         // run function if local storage is empty
         fillWeatherBank();
     }
+    document.getElementById("bottomSection").style.display = "none";
 }
 
 function fillWeatherBank() {
@@ -50,7 +51,7 @@ function fillWeatherBank() {
             console.log(weatherBank);
             return weatherBank;
         }, 1000);
-    }); 
+    });
 }
 
 function move() {
@@ -68,15 +69,15 @@ function move() {
                 width++;
                 elem.style.width = width + "%";
                 elem.innerHTML = width * 1 + "%";
-                }
+            }
             if (width == 100) {
                 document.getElementById("myProgress").style.display = "none";
                 document.getElementById("myBar").style.display = "none";
+                document.getElementById("bottomSection").style.display = "block";
             }
-           
-                }
-           }
         }
+    }
+}
 
 
 function getUserLocation() {
@@ -118,21 +119,21 @@ function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
     const R = 3958.8; // Radius of the earth in miles
     // console.log("Function: getDistance\nLat: " + lat + "\nLon: " + lon + "\nuserLat: " + userLat + "\nuserLon: " + userLon);
 
-    const dLat = deg2rad(userLat-lat);
-    const dLon = deg2rad(userLon-lon); 
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(deg2rad(lat)) * Math.cos(deg2rad(userLat)) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2)
-      ; 
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    const dLat = deg2rad(userLat - lat);
+    const dLon = deg2rad(userLon - lon);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat)) * Math.cos(deg2rad(userLat)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        ;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = Math.round(R * c);
     console.log("Distance between your current location and " + city + " is approximately " + distance + " miles.");
     return distance;
 }
 
 function deg2rad(deg) {
-    return deg * (Math.PI/180)
+    return deg * (Math.PI / 180)
 }
 
 async function getForecast(lat, lon, city, distance) {
@@ -160,7 +161,7 @@ async function getForecast(lat, lon, city, distance) {
         temperatureSetting: tempSetting,
         temperatureVal: forecastData.list[0].main.temp,
         windSetting: forecastData.list[0].wind.speed < 10 ? "low" : "high",
-        windVal: forecastData.list[0].wind.speed, 
+        windVal: forecastData.list[0].wind.speed,
         weather: forecastData.list[0].weather[0].main,
         distance: distance
     };
@@ -194,7 +195,7 @@ function checkCities(weatherBank) {
     for (let i = 0; i < weatherBank.length; i++) {
         let city = weatherBank[i];
         let isMatch = true;
-    
+
         // check if the temperature is within range
         if (userTemperature === "hot" && (city.temperature === "moderate" || city.temperature === "cold")) {
             isMatch = false;
@@ -203,28 +204,28 @@ function checkCities(weatherBank) {
         } else if (userTemperature === "cold" && (city.temperature === "hot" || city.temperature === "moderate")) {
             isMatch = false;
         }
-        
+
         // check if the wind is within range
         if (userWind === "low" && city.wind === "high") {
-          isMatch = false;
+            isMatch = false;
         } else if (userWind === "high" && city.wind === "low") {
-          isMatch = false;
+            isMatch = false;
         }
-    
+
         // check if the weather conditions match
         if (userConditions !== "" && city.weather !== userConditions) {
-          isMatch = false;
+            isMatch = false;
         }
-    
+
         // check if the distance is within the user's range
         if (city.distance > userRange) {
-          isMatch = false;
+            isMatch = false;
         }
-    
+
         if (isMatch) {
-          returnedCities.push(city);
+            returnedCities.push(city);
         }
-      }
+    }
 
     returnedCities.sort((a, b) => a.distance - b.distance);
     console.log("Cities matching your criteria are:")
@@ -233,10 +234,10 @@ function checkCities(weatherBank) {
     displayCities(returnedCities)
 }
 
-function displayCities(returnedCities){
+function displayCities(returnedCities) {
     let weatherTemplate = ``;
 
-    for (let i = 0; i < returnedCities.length; i++){
+    for (let i = 0; i < returnedCities.length; i++) {
         let city = returnedCities[i];
 
         let setCity = city.city;
@@ -245,7 +246,7 @@ function displayCities(returnedCities){
         let setConditions = city.weather;
         let setTemp = city.temperatureVal;
         let setWind = city.windVal;
-        
+
         weatherTemplate += `
         <div>
             <h3>${setCity}</h3>
@@ -263,14 +264,14 @@ function displayCities(returnedCities){
 
 clearStorageBtn.addEventListener("click", clearStorage);
 fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
-submitBtn.addEventListener("click",checkCities);
+submitBtn.addEventListener("click", checkCities);
 
 function clearStorage() {
     localStorage.clear();
 }
 
 function toTitleCase(str) {
-    return str.replace(/\w\S*/g, function(txt){
+    return str.replace(/\w\S*/g, function (txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
