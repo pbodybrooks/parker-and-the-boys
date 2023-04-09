@@ -40,18 +40,14 @@ function move() {
                 elem.innerHTML = width * 1 + "%";
                 }
             if (width == 100) {
-                elem.style.display = "none";
+                document.getElementById("myProgress").style.display = "none";
+                document.getElementById("myBar").style.display = "none";
             }
-            else {
-                if (width == 0) {
-                    elem.style.display = "none";
-
+           
                 }
            }
         }
-    }   
-}
-
+    
 window.onload = function () {
     if (!localStorage.getItem("weatherBank")) {
         // run function if local storage is empty
