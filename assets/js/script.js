@@ -52,26 +52,26 @@ function fillWeatherBank() {
         }, 1000);
     }); 
 }
-
+// this function makes the progress bar work
 function move() {
-    var i = 0;
-    if (i == 0) {
-        i = 1;
-        var elem = document.getElementById("myBar");
+    var i = 0; // this is the counter
+    if (i == 0) { 
+        i = 1; 
+        var elem = document.getElementById("myBar"); // this is the progress bar element
         var width = 1;
-        var id = setInterval(frame, 90);
-        function frame() {
-            if (width >= 100) {
+        var id = setInterval(frame, 90); // this is the speed of the progress bar
+        function frame() { 
+            if (width >= 100) { // this is the length of the progress bar
                 clearInterval(id);
                 i = 0;
-            } else {
+            } else { 
                 width++;
-                elem.style.width = width + "%";
-                elem.innerHTML = width * 1 + "%";
+                elem.style.width = width + "%"; // this is the width of the progress bar
+                elem.innerHTML = width * 1 + "%"; // this is the percentage inside the progress bar
                 }
             if (width == 100) {
-                document.getElementById("myProgress").style.display = "none";
-                document.getElementById("myBar").style.display = "none";
+                document.getElementById("myProgress").style.display = "none"; // this hides the progress bar
+                document.getElementById("myBar").style.display = "none"; // this hides the progress bar
             }
            
                 }
