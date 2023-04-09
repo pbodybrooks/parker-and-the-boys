@@ -29,6 +29,7 @@ let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lak
 // "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City"];
 
 // initialize weatherBank as an empty array
+
 let weatherBank = [];
 
 
@@ -48,12 +49,14 @@ window.onload = function () {
         
         // localStorage.setItem('lastRunTime', now);
     }
+
     // // if weatherBank has not been filled within last 24 hours, clear old data and run function to fill it again
     // if (hoursSinceLastRun > 24) {  
     //     localStorage.clear();
     //     fillWeatherBank();
     //     localStorage.setItem('lastRunTime', now);
     // }
+
 }
 
 
@@ -83,8 +86,10 @@ function fillWeatherBank() {
             console.log(weatherBank);
             // return the weatherbank
             return weatherBank;
+
         }, 5000);
     }); 
+
 }
 
 // loading bar functionality
@@ -103,10 +108,11 @@ function move() {
                 width++;
                 elem.style.width = width + "%";
                 elem.innerHTML = width * 1 + "%";
-                }
+            }
             if (width == 100) {
                 document.getElementById("myProgress").style.display = "none";
                 document.getElementById("myBar").style.display = "none";
+                document.getElementById("bottomSection").style.display = "block";
             }
         }
     }
@@ -148,6 +154,7 @@ async function getCoords(city) {
 function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
     const R = 3958.8; // radius of the earth in miles
 
+
     // convert degrees to radians
     const dLat = deg2rad(userLat-lat);
     const dLon = deg2rad(userLon-lon); 
@@ -160,6 +167,7 @@ function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
     // calculate the angular distance in radians between the two locations
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
     // calculate distance in miles and round the value
+
     const distance = Math.round(R * c);
     // console log for testing purpose
     console.log("Distance between your current location and " + city + " is approximately " + distance + " miles.");
@@ -169,7 +177,7 @@ function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
 
 // degree to radians conversion function
 function deg2rad(deg) {
-    return deg * (Math.PI/180)
+    return deg * (Math.PI / 180)
 }
 
 // get the weather forecast for each city using lat, lon, and API key in URL
@@ -223,9 +231,11 @@ async function getForecast(lat, lon, city, distance) {
         temperatureVal: forecastData.list[0].main.temp,
         // the same philosophy applies to wind. it is either low or high for easier sorting
         windSetting: forecastData.list[0].wind.speed < 10 ? "low" : "high",
+
         // windVal is used to display the actual wind speed value to the user
         windVal: forecastData.list[0].wind.speed, 
         // weather description (ie. cloudy, clear, snow, etc.)
+
         weather: forecastData.list[0].weather[0].main,
         distanceSetting: distanceSetting,
         distanceVal: distance
@@ -273,9 +283,11 @@ function checkCities(weatherBank) {
         // set the acceptance criteria for the indexed city to "true"
         let isMatch = true;
 
+
         // now, we send each city through the 'gauntlet' of pass/fail criteria. Only cities that emerge at the end with a match value of true will be accepted into returnedCities
         // check if the temperature is within range by comparing the user specified value to each possible of weather values
         // if any of these are true, the match value is false and it fails the gauntlet
+
         if (userTemperature === "hot" && (city.temperature === "moderate" || city.temperature === "cold")) {
             isMatch = false;
         } else if (userTemperature === "moderate" && (city.temperature === "hot" || city.temperature === "cold")) {
@@ -283,18 +295,21 @@ function checkCities(weatherBank) {
         } else if (userTemperature === "cold" && (city.temperature === "hot" || city.temperature === "moderate")) {
             isMatch = false;
         }
+
         
         // check if the wind is within range - same philosphy as temperature above
         if (userWind === "low" && city.windSetting === "high") {
           isMatch = false;
         } else if (userWind === "high" && city.windSetting === "low") {
           isMatch = false;
+
         }
-    
+
         // check if the weather conditions match
         if (userConditions !== "" && city.weather !== userConditions) {
-          isMatch = false;
+            isMatch = false;
         }
+
     
         // distance filtering wasn't working in a previous attempt so I re-wrote it to work identically to how temperature is sorted.
         if (userRange === "far" && (city.distanceSetting === "medium" || city.distanceSetting === "close")) {
@@ -306,8 +321,9 @@ function checkCities(weatherBank) {
         }
         
         // if the cities made it to the end of the gauntlet while maitaining a match value of true, then it is worthy of being pushed to returnedCities
+
         if (isMatch) {
-          returnedCities.push(city);
+            returnedCities.push(city);
         }
     }
 
@@ -321,6 +337,7 @@ function checkCities(weatherBank) {
     displayCities(returnedCities)
 }
 
+
 // displayCities takes any and all cities that made it into returnedCities and shows them to the user via a tempalte literal
 function displayCities(returnedCities){
     // first, initialize the weatherTemplate template literal
@@ -329,6 +346,7 @@ function displayCities(returnedCities){
     // for each city in the returnedCities array
     for (let i = 0; i < returnedCities.length; i++){
         // again, let city = returnedCities' index for simplicity
+
         let city = returnedCities[i];
 
         // here we create and initialize all values the user would want to see
@@ -338,8 +356,10 @@ function displayCities(returnedCities){
         let setConditions = city.weather;
         let setTemp = city.temperatureVal;
         let setWind = city.windVal;
+
         
         // build the template literal
+
         weatherTemplate += `
         <div>
             <h3>${setCity}</h3>
@@ -359,12 +379,14 @@ function displayCities(returnedCities){
 // event listeners to run functionality 
 clearStorageBtn.addEventListener("click", clearStorage);
 fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
-submitBtn.addEventListener("click",checkCities);
+submitBtn.addEventListener("click", checkCities);
 
 // simple function to clear local storage both for testing purposes and for ease of use
 function clearStorage() {
     localStorage.clear();
 }
+
+
 
 // function toTitleCase(str) {
 //     return str.replace(/\w\S*/g, function(txt){
