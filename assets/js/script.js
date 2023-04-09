@@ -68,6 +68,10 @@ function move() {
                 width++;
                 elem.style.width = width + "%";
             }
+            if (width == 100) {
+                document.getElementById("myBar").style.display = "none";
+                document.getElementById("myProgress").style.display = "none";
+            }
         }
     }
 }
