@@ -70,17 +70,14 @@ function move() {
                 elem.innerHTML = width * 1 + "%";
                 }
             if (width == 100) {
-                elem.style.display = "none";
+                document.getElementById("myProgress").style.display = "none";
+                document.getElementById("myBar").style.display = "none";
             }
-            else {
-                if (width == 0) {
-                    elem.style.display = "block";
-
+           
                 }
            }
         }
-    }   
-}
+
 
 function getUserLocation() {
     return new Promise((resolve, reject) => {
@@ -114,6 +111,7 @@ async function getCoords(city) {
     // store latitude and longitude values
     lat = parseFloat(geoData.coord.lat);
     lon = parseFloat(geoData.coord.lon);
+
 }
 
 function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
@@ -276,6 +274,7 @@ function toTitleCase(str) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
+
 
 
 ///////////////////////////////
