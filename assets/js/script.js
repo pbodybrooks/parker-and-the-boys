@@ -44,7 +44,7 @@ function move() {
             }
             else {
                 if (width == 0) {
-                    elem.style.display = "block";
+                    elem.style.display = "none";
 
                 }
            }
@@ -291,6 +291,7 @@ function toTitleCase(str) {
 
 simulateSubmitBtn.addEventListener("click", simulateSubmittedCritera);
 fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
+
 
 
 
