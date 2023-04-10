@@ -41,22 +41,26 @@
   transition: all 0.3s ease;
 }
 
+
+
 /* #aboutTheTeam {
   display: none;
-}*/
+} */
 
 /* #aboutTheProject {
   text-align: center;
 } */
+
 #aboutSection {
   display: block;
 } 
 
 
-/* #aboutTheProject {
+
+#aboutTheProject {
   display: flex;
 
-} */
+}
 
 /* #submitButton {
   width: 200%;
@@ -128,5 +132,5 @@
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
-} */
+}
 
