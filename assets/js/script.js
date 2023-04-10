@@ -21,28 +21,30 @@ const elem = document.getElementById("myBar");
 
 // Navbar selections
 const getAwayEl = document.querySelector("#getAway");
-const aboutTheTeamEl = document.querySelector("#aboutTheTeam");
-const aboutTheProjectEl = document.querySelector("#aboutTheProject");
+const aboutEl = document.querySelector("#aboutSection");
+// const aboutTheProjectEl = document.querySelector("#aboutTheProject");
 
 // initialize the display properties such that the "About the Project" page shows first
-// aboutTheProjectEl.style.display = "flex";
-// aboutTheTeamEl.style.display = "none";
+// aboutTheProjectEl.style.display = "block";
+// aboutEl.style.display = "block";
 // getAwayEl.style.display = "none";
 
 // // when "About the Team" is clicked, hide the about the project and get away sections
-// aboutTheTeamEl.addEventListener("click", function (event) {
+// aboutEl.addEventListener("click", function (event) {
 //     event.preventDefault();
-//     aboutTheProjectEl.style.display = "none";
+//     // aboutTheProjectEl.style.display = "none";
 //     getAwayEl.style.display = "none";
-//     aboutTheTeamEl.style.display = "flex"
+//     aboutEl.style.display = "block";
+//     console.log("clicked");
 // })
 
 // // when Get Away! link is clicked, show the usual functionality of the webpage (loading screen, dropdowns, city return after run)
 // getAwayEl.addEventListener("click", function (event) {
 //     event.preventDefault();
-//     aboutTheTeamEl.style.display = "none";
-//     aboutTheProjectEl.style.display = "none";
-//     getAwayEl.style.display = "flex";
+//     aboutEl.style.display = "none";
+//     // aboutTheProjectEl.style.display = "none";
+//     getAwayEl.style.display = "block";
+//     console.log("clicked");
 // })
 
 // predefined bank of cities to be used to fill weather data in the weatherBank
@@ -72,12 +74,13 @@ if (elem === 100){
     getAwayEl.style.display = "block";
     aboutTheTeamEl.style.display = "none";
     aboutTheProjectEl.style.display = "none";
-} else {
-    getAwayEl.style.display = "none";
-    aboutTheTeamEl.style.display = "block";
-    aboutTheProjectEl.style.display = "block";
 
-}
+} 
+// else {
+//     getAwayEl.style.display = "none";
+//     aboutTheTeamEl.style.display = "block";
+//     aboutTheProjectEl.style.display = "block";
+// }
 
 // fills the weatherbank for predefined bank of cities
 function fillWeatherBank() {
