@@ -1,4 +1,5 @@
- #myProgress { 
+
+ #myProgress {
   width: 99%;
   height: 30px;
   background-color: #ddd;
@@ -32,8 +33,7 @@
   background-color: gray;
   border-radius: 10px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin: 10px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -43,13 +43,22 @@
 
 /* #aboutTheTeam {
   display: none;
-}
+}*/
 
-#aboutTheProject {
+/* #aboutTheProject {
+  text-align: center;
+} */
+#aboutSection {
+  display: block;
+} 
+
+
+/* #aboutTheProject {
   display: flex;
+
 } */
 
-#submitButton {
+/* #submitButton {
   width: 200%;
   padding: 20px;
   margin: 10px;
@@ -119,7 +128,9 @@
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
-}
+} */
+
+
 
 #aboutTheTeam {
   width: 200%;
