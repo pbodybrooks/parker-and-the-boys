@@ -44,9 +44,11 @@ nav {
   transition: all 0.3s ease;
 }
 
+
+
 /* #aboutTheTeam {
   display: none;
-}*/
+} */
 
 /* #aboutTheProject {
   text-align: center;
@@ -61,10 +63,11 @@ nav {
 } */
 
 
-/* #aboutTheProject {
+
+#aboutTheProject {
   display: flex;
 
-} */
+}
 
 /* #submitButton {
   width: 200%;
@@ -136,7 +139,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
-} */
+}
 
 
 
