@@ -37,7 +37,7 @@ window.onload = function () {
         // run fill function if local storage is empty
         fillWeatherBank();
     }
-    document.getElementById("bottomSection").style.display="none";
+    // document.getElementById("bottomSection").style.display="none";
 }
 
 // fills the weatherbank for predefined bank of cities
