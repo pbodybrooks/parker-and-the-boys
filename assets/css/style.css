@@ -1,4 +1,4 @@
- #myProgress {
+ #myProgress { 
   width: 99%;
   height: 30px;
   background-color: #ddd;
@@ -110,6 +110,18 @@
 }
 
 #tempRange {
+  width: 200%;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+#aboutTheTeam {
   width: 200%;
   border-radius: 10px;
   padding: 20px;
