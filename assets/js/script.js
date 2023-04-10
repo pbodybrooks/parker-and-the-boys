@@ -16,15 +16,42 @@ const cityContainerEl = document.querySelector("#citiesContainer");
 const clearStorageBtn = document.querySelector("#simulate-submit");
 const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 
+
+// Navbar selections
+const getAwayEl = document.querySelector("#getAway");
+const aboutTheTeamEl = document.querySelector("#aboutTheTeam");
+const aboutTheProjectEl = document.querySelector("#aboutTheProject");
+
+// // initialize the display properties such that the "About the Project" page shows first
+// aboutTheProjectEl.style.display = "flex";
+// aboutTheTeamEl.style.display = "none";
+// getAwayEl.style.display = "none";
+
+// when "About the Team" is clicked, hide the about the project and get away sections
+aboutTheTeamEl.addEventListener("click", function (event) {
+    event.preventDefault();
+    aboutTheProjectEl.style.display = "none";
+    getAwayEl.style.display = "none";
+    aboutTheTeamEl.style.display = "flex"
+})
+
+// when Get Away! link is clicked, show the usual functionality of the webpage (loading screen, dropdowns, city return after run)
+getAwayEl.addEventListener("click", function (event) {
+    event.preventDefault();
+    aboutTheTeamEl.style.display = "none";
+    aboutTheProjectEl.style.display = "none";
+    getAwayEl.style.display = "flex";
+})
+
 // predefined bank of cities to be used to fill weather data in the weatherBank
-// extended weatherBank:
+// extended weatherBank (more results, takes longer to load):
 // let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lake City", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "Miami", 
 //  "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls", "Atlanta", 
 //  "Miami", "Charlotte", "Houston", "Fargo", "Chicago", "San Antonio", "San Diego", "Dallas", "Austin", "Jacksonville", "Fort Worth", "San Jose", "Columbus", "Indianapolis", 
 //  "San Fransisco", "Oklahoma City", "El Paso", "Nashville", "Memphis", "Louisville", "Detroit", "Boston", "Baltimore", "Milwaukee"]
 // ;
 
-// abridged weatherBank:
+// abridged weatherBank (less results, loads more quickly):
 let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lake City", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "Miami", 
 "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City"];
 
@@ -37,11 +64,13 @@ window.onload = function () {
         // run fill function if local storage is empty
         fillWeatherBank();
     }
-    // document.getElementById("bottomSection").style.display="none";
+    document.getElementById("citeriaSelection").style.display="none";
 }
 
 // fills the weatherbank for predefined bank of cities
 function fillWeatherBank() {
+    // clear local storage so fillWeatherBank button can serve as a reset
+    localStorage.clear();
     // loading bar
     move();
 
@@ -352,7 +381,6 @@ function displayCities(returnedCities){
 }
 
 // event listeners to run functionality 
-clearStorageBtn.addEventListener("click", clearStorage);
 fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
 submitBtn.addEventListener("click", checkCities);
 
