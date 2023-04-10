@@ -269,11 +269,11 @@ function checkCities(weatherBank) {
         // now, we send each city through the 'gauntlet' of pass/fail criteria. Only cities that emerge at the end with a match value of true will be accepted into returnedCities
         // check if the temperature is within range by comparing the user specified value to each possible of weather values
         // if any of these are true, the match value is false and it fails the gauntlet
-        if (userTemperature === "hot" && (city.temperature === "moderate" || city.temperature === "cold")) {
+        if (userTemperature === "hot" && (city.temperatureSetting === "moderate" || city.temperatureSetting === "cold")) {
             isMatch = false;
-        } else if (userTemperature === "moderate" && (city.temperature === "hot" || city.temperature === "cold")) {
+        } else if (userTemperature === "moderate" && (city.temperatureSetting === "hot" || city.temperatureSetting === "cold")) {
             isMatch = false;
-        } else if (userTemperature === "cold" && (city.temperature === "hot" || city.temperature === "moderate")) {
+        } else if (userTemperature === "cold" && (city.temperatureSetting === "hot" || city.temperatureSetting === "moderate")) {
             isMatch = false;
         }
         
