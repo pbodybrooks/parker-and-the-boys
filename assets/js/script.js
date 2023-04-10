@@ -74,6 +74,7 @@ if (elem === 100){
     getAwayEl.style.display = "block";
     aboutTheTeamEl.style.display = "none";
     aboutTheProjectEl.style.display = "none";
+
 } 
 // else {
 //     getAwayEl.style.display = "none";
