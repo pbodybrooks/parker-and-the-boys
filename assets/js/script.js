@@ -21,12 +21,10 @@ const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 const getAwayEl = document.querySelector("#getAway");
 const aboutTheTeamEl = document.querySelector("#aboutTheTeam");
 const aboutTheProjectEl = document.querySelector("#aboutTheProject");
-
 // initialize the display properties such that the "About the Project" page shows first
 aboutTheProjectEl.style.display = "flex";
 aboutTheTeamEl.style.display = "none";
 getAwayEl.style.display = "none";
-
 // when "About the Team" is clicked, hide the about the project and get away sections
 aboutTheTeamEl.addEventListener("click", function (event) {
     event.preventDefault();
