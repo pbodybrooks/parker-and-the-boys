@@ -18,7 +18,6 @@ const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 
 const elem = document.getElementById("myBar");
 
-
 // Navbar selections
 const getAwayEl = document.querySelector("#getAway");
 const aboutEl = document.querySelector("#aboutSection");
