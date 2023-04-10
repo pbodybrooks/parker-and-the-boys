@@ -16,6 +16,8 @@ const cityContainerEl = document.querySelector("#citiesContainer");
 const clearStorageBtn = document.querySelector("#simulate-submit");
 const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 
+const elem = document.getElementById("myBar");
+
 
 // Navbar selections
 const getAwayEl = document.querySelector("#getAway");
@@ -66,6 +68,17 @@ window.onload = function () {
     }
 }
 
+if (elem === 100){
+    getAwayEl.style.display = "block";
+    aboutTheTeamEl.style.display = "none";
+    aboutTheProjectEl.style.display = "none";
+} else {
+    getAwayEl.style.display = "none";
+    aboutTheTeamEl.style.display = "block";
+    aboutTheProjectEl.style.display = "block";
+
+}
+
 // fills the weatherbank for predefined bank of cities
 function fillWeatherBank() {
     // clear local storage so fillWeatherBank button can serve as a reset
@@ -105,7 +118,7 @@ function move() {
     var i = 0; // this is the counter
     if (i == 0) { 
         i = 1; 
-        var elem = document.getElementById("myBar"); // this is the progress bar element
+        // var elem = document.getElementById("myBar"); // this is the progress bar element
         var width = 1;
         var id = setInterval(frame, 200); // this is the speed of the progress bar
         function frame() { 
