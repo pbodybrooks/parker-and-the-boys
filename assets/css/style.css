@@ -1,3 +1,7 @@
+nav {
+  display: flex;
+  justify-content: center;
+}
 
  #myProgress {
   width: 99%;
@@ -54,6 +58,10 @@
 #aboutSection {
   display: block;
 } 
+
+/* #criteriaSelection {
+  display: block;
+} */
 
 
 
@@ -134,3 +142,15 @@
   transition: all 0.3s ease;
 }
 
+
+
+/* #aboutTheTeam {
+  width: 200%;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+} */
