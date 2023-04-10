@@ -48,7 +48,9 @@
 /* #aboutTheProject {
   text-align: center;
 } */
-
+#aboutSection {
+  display: block;
+} 
 
 
 /* #aboutTheProject {
@@ -56,7 +58,7 @@
 
 } */
 
-#submitButton {
+/* #submitButton {
   width: 200%;
   padding: 20px;
   margin: 10px;
@@ -126,5 +128,5 @@
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
-}
+} */
 
