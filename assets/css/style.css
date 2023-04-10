@@ -1,3 +1,7 @@
+nav {
+  display: flex;
+  justify-content: center;
+}
 
  #myProgress {
   width: 99%;
@@ -47,6 +51,7 @@
 /* #aboutTheProject {
   text-align: center;
 } */
+
 #aboutSection {
   display: block;
 } 
@@ -135,7 +140,7 @@
 
 
 
-#aboutTheTeam {
+/* #aboutTheTeam {
   width: 200%;
   border-radius: 10px;
   padding: 20px;
@@ -143,6 +148,5 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   transition: all 0.3s ease;
-}
+} */

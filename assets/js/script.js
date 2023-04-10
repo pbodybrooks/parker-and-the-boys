@@ -74,13 +74,8 @@ if (elem === 100){
     getAwayEl.style.display = "block";
     aboutTheTeamEl.style.display = "none";
     aboutTheProjectEl.style.display = "none";
-
 } 
-// else {
-//     getAwayEl.style.display = "none";
-//     aboutTheTeamEl.style.display = "block";
-//     aboutTheProjectEl.style.display = "block";
-// }
+
 
 // fills the weatherbank for predefined bank of cities
 function fillWeatherBank() {
