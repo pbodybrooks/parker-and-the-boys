@@ -117,14 +117,13 @@ function move() {
                 elem.style.width = width + "%";
                 elem.innerHTML = width * 1 + "%";
                 }
-            // if (width == 100) {
-            //     document.getElementById("#myProgress").style.display = "none";
-            //     document.getElementById("#myBar").style.display = "none";
-            //     document.getElementById("#citeriaSelection").style.display="block";
-            // }
+                if (width == 100) {
+                 document.getElementById("myProgress").style.display = "none";
+                 document.getElementById("myBar").style.display = "none";
+                 //document.getElementById("citeriaSelection").style.display="block";
+              }
         }
     }
-}
 
 // get the current location of the user
 function getUserLocation() {
@@ -386,4 +385,5 @@ submitBtn.addEventListener("click", checkCities);
 // simple function to clear local storage both for testing purposes and for ease of use
 function clearStorage() {
     localStorage.clear();
+}
 }
