@@ -48,7 +48,9 @@
 /* #aboutTheProject {
   text-align: center;
 } */
-
+#aboutSection {
+  display: block;
+} 
 
 
 /* #aboutTheProject {
