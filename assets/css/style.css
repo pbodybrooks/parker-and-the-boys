@@ -40,3 +40,7 @@
   align-items: center;
   transition: all 0.3s ease;
 }
+
+h3 { 
+  font-size: 5rem;
+}
