@@ -16,15 +16,42 @@ const cityContainerEl = document.querySelector("#citiesContainer");
 const clearStorageBtn = document.querySelector("#simulate-submit");
 const fillWeatherBankBtn = document.querySelector("#fill-weatherBank");
 
+
+// Navbar selections
+const getAwayEl = document.querySelector("#getAway");
+const aboutTheTeamEl = document.querySelector("#aboutTheTeam");
+const aboutTheProjectEl = document.querySelector("#aboutTheProject");
+
+// initialize the display properties such that the "About the Project" page shows first
+aboutTheProjectEl.style.display = "flex";
+aboutTheTeamEl.style.display = "none";
+getAwayEl.style.display = "none";
+
+// when "About the Team" is clicked, hide the about the project and get away sections
+aboutTheTeamEl.addEventListener("click", function (event) {
+    event.preventDefault();
+    aboutTheProjectEl.style.display = "none";
+    getAwayEl.style.display = "none";
+    aboutTheTeamEl.style.display = "flex"
+})
+
+// when Get Away! link is clicked, show the usual functionality of the webpage (loading screen, dropdowns, city return after run)
+getAwayEl.addEventListener("click", function (event) {
+    event.preventDefault();
+    aboutTheTeamEl.style.display = "none";
+    aboutTheProjectEl.style.display = "none";
+    getAwayEl.style.display = "flex";
+})
+
 // predefined bank of cities to be used to fill weather data in the weatherBank
-// extended weatherBank:
+// extended weatherBank (more results, takes longer to load):
 // let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lake City", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "Miami", 
 //  "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City", "Buffalo", "Billings", "Idaho Falls", "Atlanta", 
 //  "Miami", "Charlotte", "Houston", "Fargo", "Chicago", "San Antonio", "San Diego", "Dallas", "Austin", "Jacksonville", "Fort Worth", "San Jose", "Columbus", "Indianapolis", 
 //  "San Fransisco", "Oklahoma City", "El Paso", "Nashville", "Memphis", "Louisville", "Detroit", "Boston", "Baltimore", "Milwaukee"]
 // ;
 
-// abridged weatherBank:
+// abridged weatherBank (less results, loads more quickly):
 let MVPcityBank = ["Tulsa", "New York", "Los Angeles", "Philadelphia", "Salt Lake City", "Las Vegas", "Denver", "Kalispell", "Seattle", "Austin", "Cheyenne", "Miami", 
 "Grand Rapids", "Albuquerque", "Phoenix", "Portland", "Eugene", "Flagstaff", "Cedar City"];
 
@@ -33,34 +60,17 @@ let weatherBank = [];
 
 // on first page visit, when page loads, fill the weatherbank
 window.onload = function () {
-    // // set last time weatherbank was filled to lastRunTime
-    // const lastRunTime = localStorage.getItem('lastRunTime');
-    // // current time
-    // const now = new Date().getTime();
-    // // calculate difference between current time and last run
-    // const hoursSinceLastRun = (now - lastRunTime) / (1000 * 60 * 60);
-
-    // if weatherbank does not yet exist in localstorage, user has not visited before
     if (!localStorage.getItem("weatherBank")) {
         // run fill function if local storage is empty
         fillWeatherBank();
-        
-        // localStorage.setItem('lastRunTime', now);
     }
-
-    document.getElementById("bottomSection").style.display="none";
-
-    // // if weatherBank has not been filled within last 24 hours, clear old data and run function to fill it again
-    // if (hoursSinceLastRun > 24) {  
-    //     localStorage.clear();
-    //     fillWeatherBank();
-    //     localStorage.setItem('lastRunTime', now);
-    // }
-
+    document.getElementById("citeriaSelection").style.display="none";
 }
 
 // fills the weatherbank for predefined bank of cities
 function fillWeatherBank() {
+    // clear local storage so fillWeatherBank button can serve as a reset
+    localStorage.clear();
     // loading bar
     move();
 
@@ -151,8 +161,8 @@ async function getCoords(city) {
 
 // use the Haversine formula to calculate the distance between the user and the current city
 function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
-    const R = 3958.8; // radius of the earth in miles
-
+    // radius of the earth in miles
+    const R = 3958.8; 
 
     // convert degrees to radians
     const dLat = deg2rad(userLat-lat);
@@ -165,11 +175,14 @@ function getDistance(userLat, userLon, lat, lon, city, weatherBank) {
     ; 
     // calculate the angular distance in radians between the two locations
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    // calculate distance in miles and round the value
 
+    // calculate distance in miles and round the value
     const distance = Math.round(R * c);
+
+
     // console log for testing purpose
     console.log("Distance between your current location and " + city + " is approximately " + distance + " miles.");
+
     // return the distance
     return distance;
 }
@@ -186,70 +199,6 @@ async function getForecast(lat, lon, city, distance) {
     const response = await fetch(forecastURL);
     const forecastData = await response.json();
     
-    // for (let i=0; i < forecastData.list.length; i++){
-    //     let forecastUNIX = forecastData.list[i].dt;
-    //     let checkDate = dayjs.unix(forecastUNIX).format('HH');
-
-    //     if (checkDate === '11' || checkDate === '12'){
-
-    //         // for easier sorting of cities, tempSetting is set as an empty string to be filled below
-    //         let tempSetting = '';
-
-    //         // if temp is above 80, it is "hot"
-    //         if (forecastData.list[i].main.temp > 80) {
-    //             tempSetting = "hot";
-    //         }
-    //         // if temp is below 50, it is "cold"
-    //         else if (forecastData.list[i].main.temp < 50) {
-    //             tempSetting = "cold";
-    //         }
-    //         // otherwise, the temp is between 50 and 80 and it is "moderate"
-    //         else {
-    //             tempSetting = "moderate";
-    //         }
-
-    //         // similarly, for easier sorting of cities by distance, distanceSetting is set as an empty string to be filled below
-    //         let distanceSetting = '';
-
-    //         // if distance is above 500, it is "far"
-    //         if (distance > 500) {
-    //             distanceSetting = "far";
-    //         }
-    //         // if distance is below 100, it is "close"
-    //         else if (distance < 100) {
-    //             distanceSetting = "close";
-    //         }
-    //         // otherwise, the distance is between 100 and 500 and it is "medium"
-    //         else {
-    //             distanceSetting = "medium";
-    //         }
-
-    //         // create the weather object for each city we will be storing in the weatherBank array
-    //         // inside are all the key-value pairs needed for adequate sorting of cities and return of desired  weather data
-    //         let weather = {
-    //             city: forecastData.city.name,
-    //             date: checkDate,
-    //             icon: "https://openweathermap.org/img/wn/" + forecastData.list[i].weather[0].icon + "@2x.png",
-    //             // again, tempSetting simply defines "hot", "moderate", or "cold" for sorting purposes
-    //             temperatureSetting: tempSetting,
-    //             // tempVal on the other hand is used to push the actual temperature value to the user
-    //             temperatureVal: forecastData.list[i].main.temp,
-    //             // the same philosophy applies to wind. it is either low or high for easier sorting
-    //             windSetting: forecastData.list[i].wind.speed < 10 ? "low" : "high",
-    //             // windVal is used to display the actual wind speed value to the user
-    //             windVal: forecastData.list[i].wind.speed, 
-    //             // weather description (ie. cloudy, clear, snow, etc.)
-    //             weather: forecastData.list[i].weather[0].main,
-    //             // distanceSetting is either far, medium, or close
-    //             distanceSetting: distanceSetting,
-    //             // distanceVal is the actual distance in miles
-    //             distanceVal: distance,
-    //             humidity: forecastData.list[i].main.humidity
-    //         };
-    //         // push the weather objects for each city into the weatherBank array
-    //         weatherBank.push(weather);
-    // }
-
     // for easier sorting of cities, tempSetting is set as an empty string to be filled below
     let tempSetting = '';
 
@@ -349,12 +298,11 @@ function checkCities(weatherBank) {
         // now, we send each city through the 'gauntlet' of pass/fail criteria. Only cities that emerge at the end with a match value of true will be accepted into returnedCities
         // check if the temperature is within range by comparing the user specified value to each possible of weather values
         // if any of these are true, the match value is false and it fails the gauntlet
-
-        if (userTemperature === "hot" && (city.temperature === "moderate" || city.temperature === "cold")) {
+        if (userTemperature === "hot" && (city.temperatureSetting === "moderate" || city.temperatureSetting === "cold")) {
             isMatch = false;
-        } else if (userTemperature === "moderate" && (city.temperature === "hot" || city.temperature === "cold")) {
+        } else if (userTemperature === "moderate" && (city.temperatureSetting === "hot" || city.temperatureSetting === "cold")) {
             isMatch = false;
-        } else if (userTemperature === "cold" && (city.temperature === "hot" || city.temperature === "moderate")) {
+        } else if (userTemperature === "cold" && (city.temperatureSetting === "hot" || city.temperatureSetting === "moderate")) {
             isMatch = false;
         }
         
@@ -363,7 +311,6 @@ function checkCities(weatherBank) {
           isMatch = false;
         } else if (userWind === "high" && city.windSetting === "low") {
           isMatch = false;
-
         }
 
         // check if the weather conditions match
@@ -405,7 +352,6 @@ function displayCities(returnedCities){
     // for each city in the returnedCities array
     for (let i = 0; i < returnedCities.length; i++){
         // again, let city = returnedCities' index for simplicity
-
         let city = returnedCities[i];
 
         // here we create and initialize all values the user would want to see
@@ -418,7 +364,6 @@ function displayCities(returnedCities){
 
         
         // build the template literal
-
         weatherTemplate += `
         <div id="cityCard">
             <h3>${setCity}</h3>
@@ -436,7 +381,6 @@ function displayCities(returnedCities){
 }
 
 // event listeners to run functionality 
-clearStorageBtn.addEventListener("click", clearStorage);
 fillWeatherBankBtn.addEventListener("click", fillWeatherBank);
 submitBtn.addEventListener("click", checkCities);
 
