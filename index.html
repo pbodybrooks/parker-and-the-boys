@@ -14,21 +14,22 @@
     <header id="header">
         <h1>Get A Way To Getaway</h1>
     </header>
-    <nav> 
-        <ul> 
+    <nav>
+        <ul>
             <li><a href="#aboutTheProject">About The Project</a></li>
             <li><a href="#aboutTheTeam">About The Team</a></li>
             <li><a href="#getAway">Get Away!</a></li>
         </ul>
     </nav>
-    
+
     <main class="container">
         <!-- i created three sections for the three links in our nav bar. Each is a div (getAWay, aboutTheProject, aboutTheTeam) -->
         <div id="getAway">
             <!-- move this button to the bottom of the webpage, we will keep this in case user needs to manually clear local storage and rerun fillWeatherBank -->
-            <button type="button" id="fill-weatherBank" class="btn btn-primary">Clear Storage and Refill Weather Bank</button>
+            <button type="button" id="fill-weatherBank" class="btn btn-primary">Clear Storage and Refill Weather
+                Bank</button>
             <!-- this should not be a header element. There should only be one header element per webpage  -->
-            <header> 
+            <header>
                 <div id="myProgress">
                     <div id="myBar"></div>
             </header>
@@ -87,43 +88,80 @@
         </div>
 
         <!-- commenting the below sections out so that I can view the deployed page and get screenshots for the ppt -->
+        <div class="grid">
+            <div id="aboutTheProject">
+                <div>
+                    <div id="projectSell">
+                        <h2>Want to get away, but don't know where to go?</h2>
+                        <p> No problem, Parker and the Boys have got you covered. Simply enter the weather criteria and
+                            distance
+                            you're willing to drive to get the weather for
+                            cities within the united states. From there, pick a city from the generated list and enjoy
+                            your
+                            weekend!
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div id="projectExp">
+                        <h3> How does it work? </h3>
+                        <p>This project was built using ~400 lines of JavaScript to tackle the functionality, and the
+                            Pico
+                            framework to aid in structure and styling. Before use, the webpage will
+                            automatically run a parent function to prepare the application. First, the user's current
+                            location
+                            is gathered. Next, the function will get weather information for a predefined
+                            bank of cities that are saved to local storage to prevent having to fill the weather bank
+                            each
+                            time
+                            the user visits the page. The webpage uses two APIs; one to return the user's
+                            current position, and another to return each cities' position and corresponding weather.
+                            From these two sets of coordinates, the Haversine method, used to calculate the distance
+                            between
+                            two
+                            points on a sphere, is used to approximate the distance between the
+                            user and the returned cities that match their desired weather and range criteria.
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div id="whoDid">
+                        <h3> Who did what?</h3>
+                        <p>Parker built the entirety of the functionality of the web application and created all of the
+                            interactive HTML elements on the webpage, namely the navigation bar,
+                            criteria selection dropdowns, and submit buttons.
+                        </p>
+                        <p>Anthony helped build the loading bar.</p>
+                        <p>Jahsper helped build the loading bar and adjusted the styling such that the dropdowns become
+                            inaccessible until loading is complete. He helped structure the HTML and
+                            set up the dropdown selections. He also served as the team's resident GitHub "Mom" and
+                            always
+                            made
+                            sure we had our main branch up to date, as well as addressed any merge
+                            issues encountered during group coding sessions. Jahsper also handled the majority of the
+                            styling -
+                            selecting the color scheme for the webpage and loading bar, as well as
+                            styling the returned cities cards to be displayed to the user.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-        <!-- <div id="aboutTheProject">
-            <h2>Want to get away, but don't know where to go?</h2>
-            <p> No problem, Parker and the Boys have got you covered. Simply enter the weather criteria and distance you're willing to drive to get the weather for 
-                cities within the united states. From there, pick a city from the generated list and enjoy your weekend!
-            </p>
-            <h3> How does it work? </h3>
-            <p>This project was built using ~400 lines of JavaScript to tackle the functionality, and the Pico framework to aid in structure and styling. Before use, the webpage will
-                automatically run a parent function to prepare the application. First, the user's current location is gathered. Next, the function will get weather information for a predefined 
-                bank of cities that are saved to local storage to prevent having to fill the weather bank each time the user visits the page. The webpage uses two APIs; one to return the user's 
-                current position, and another to return each cities' position and corresponding weather. 
-                From these two sets of coordinates, the Haversine method, used to calculate the distance between two points on a sphere, is used to approximate the distance between the 
-                user and the returned cities that match their desired weather and range criteria.
-            </p>
-            <h3> Who did what?</h3>
-            <p>Parker built the entirety of the functionality of the web application and created all of the interactive HTML elements on the webpage, namely the navigation bar,
-                criteria selection dropdowns, and submit buttons. 
-            </p>
-            <p>Anthony helped build the loadding bar.</p>
-            <p>Jahsper helped build the loading bar and adjusted the styling such that the dropdowns become inaccessible until loading is complete. He helped structure the HTML and
-                set up the dropdown selections. He also served as the team's resident GitHub "Mom" and always made sure we had our main branch up to date, as well as addressed any merge 
-                issues encountered during group coding sessions. Jahsper also handled the majority of the styling - selecting the color scheme for the webpage and loading bar, as well as 
-                styling the returned cities cards to be displayed to the user.
-            </p>
+            <div id="aboutTheTeam">
+                <h2>Parker and the Boys</h2>
+                <p>Parker is Parker Brook, and the boys are Jahsper Harrell and Anthony LaNier. There were three boys to
+                    start, but after losing a fellow coder,
+                    we were left with just two, but this didn't stop us from acheiving our objective: together, the
+                    three of us bootcamp students created
+                    an application to help those who just want to get away, but don't know where to go.
+                </p>
+                <p>As a team, we have a diverse background with a broad set of skills that allowed us to divide and
+                    conquer the project.
+                </p>
+            </div>
         </div>
 
-        <div id="aboutTheTeam">
-            <h2>Parker and the Boys</h2>
-            <p>Parker is Parker Brook, and the boys are Jahsper Harrell and Anthony LaNier. There were three boys to start, but after losing a fellow coder,
-                we were left with just two, but this didn't stop us from acheiving our objective: together, the three of us bootcamp students created 
-                an application to help those who just want to get away, but don't know where to go.
-            </p>
-            <p>As a team, we have a diverse background with a broad set of skills that allowed us to divide and conquer the project. 
-            </p>
-        </div> -->
-
-    <script src="./assets/js/script.js"></script>
+        <script src="./assets/js/script.js"></script>
     </main>
     <main class="container"></main>
 </body>
