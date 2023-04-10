@@ -116,7 +116,7 @@ function move() {
     var i = 0; // this is the counter
     if (i == 0) { 
         i = 1; 
-        // var elem = document.getElementById("myBar"); // this is the progress bar element
+        var elem = document.getElementById("myBar"); // this is the progress bar element
         var width = 1;
         var id = setInterval(frame, 200); // this is the speed of the progress bar
         function frame() { 
@@ -128,14 +128,14 @@ function move() {
                 elem.style.width = width + "%";
                 elem.innerHTML = width * 1 + "%";
                 }
-            // if (width == 100) {
-            //     document.getElementById("#myProgress").style.display = "none";
-            //     document.getElementById("#myBar").style.display = "none";
-            //     document.getElementById("#citeriaSelection").style.display="block";
-            // }
-        }
+                if (width == 100) {
+                 document.getElementById("myProgress").style.display = "none";
+                 document.getElementById("myBar").style.display = "none";
+                 //document.getElementById("fill-weatherBank").style.display="none";
+              }
+              }
+        }       
     }
-}
 
 // get the current location of the user
 function getUserLocation() {
@@ -398,3 +398,4 @@ submitBtn.addEventListener("click", checkCities);
 function clearStorage() {
     localStorage.clear();
 }
+
