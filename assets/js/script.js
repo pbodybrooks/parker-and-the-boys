@@ -125,7 +125,7 @@ function move() {
             } else { 
                 width++;
                 elem.style.width = width + "%";
-                elem.innerHTML = width * 1 + "Filling weather bank. Please wait";
+                // elem.innerHTML = width * 1 + "Filling weather bank. Please wait";
                 }
                 if (width == 100) {
                  document.getElementById("myProgress").style.display = "none";
