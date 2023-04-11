@@ -23,28 +23,7 @@ const getAwayEl = document.querySelector("#getAway");
 const aboutEl = document.querySelector("#aboutSection");
 // const aboutTheProjectEl = document.querySelector("#aboutTheProject");
 
-// initialize the display properties such that the "About the Project" page shows first
-// aboutTheProjectEl.style.display = "block";
-// aboutEl.style.display = "block";
-// getAwayEl.style.display = "none";
 
-// // when "About the Team" is clicked, hide the about the project and get away sections
-// aboutEl.addEventListener("click", function (event) {
-//     event.preventDefault();
-//     // aboutTheProjectEl.style.display = "none";
-//     getAwayEl.style.display = "none";
-//     aboutEl.style.display = "block";
-//     console.log("clicked");
-// })
-
-// // when Get Away! link is clicked, show the usual functionality of the webpage (loading screen, dropdowns, city return after run)
-// getAwayEl.addEventListener("click", function (event) {
-//     event.preventDefault();
-//     aboutEl.style.display = "none";
-//     // aboutTheProjectEl.style.display = "none";
-//     getAwayEl.style.display = "block";
-//     console.log("clicked");
-// })
 
 // predefined bank of cities to be used to fill weather data in the weatherBank
 // extended weatherBank (more results, takes longer to load):
@@ -303,7 +282,6 @@ function checkCities(weatherBank) {
         // set the acceptance criteria for the indexed city to "true"
         let isMatch = true;
 
-
         // now, we send each city through the 'gauntlet' of pass/fail criteria. Only cities that emerge at the end with a match value of true will be accepted into returnedCities
         // check if the temperature is within range by comparing the user specified value to each possible of weather values
         // if any of these are true, the match value is false and it fails the gauntlet
@@ -371,7 +349,6 @@ function displayCities(returnedCities){
         let setTemp = city.temperatureVal;
         let setWind = city.windVal;
 
-        
         // build the template literal
         weatherTemplate += `
         <div id="cityCard">
